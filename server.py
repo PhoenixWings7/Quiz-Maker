@@ -4,7 +4,7 @@ app = Flask(__name__)
 
 TEMPLATES_ROUTES = {"main_page" : "main.html",
                     "leaderboard" : "leaderboard.html",
-                    "new quiz start" : "new_quiz",
+                    "new quiz start" : "new_quiz.html",
                     "new quiz form" : "new_quiz_form.html",
                     "quiz list": "quiz_list.html"}
 
@@ -20,7 +20,7 @@ def new_quiz_route():
 
 
 @app.route('/new-quiz-form', methods = ["GET", "POST"])
-def new_quiz_route():
+def new_quiz_form():
     if request.method == "GET":
         return render_template(TEMPLATES_ROUTES["new quiz form"])
     if request.method == "POST":
