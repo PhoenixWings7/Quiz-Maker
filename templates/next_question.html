@@ -2,16 +2,16 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Make a quiz</title>
+    <title>Add your question!</title>
 </head>
 <body style = "background-color: aquamarine">
     <h1 align = "center" style = "color: deeppink">Make your own Quiz!</h1>
 
-    <form align = "center" action = "/new-quiz-next" method = "post">
-        <label for = "quiz_title"><h2 style = "color: deeppink">Quiz title</h2></label>
-        {{quiz_title}}
+    <form align = "center" action = "/new-quiz-next/{{quiz_title}}" method = "post">
+        <input type="hidden" id = "quiz_title" name = "quiz_title" value="{{quiz_title}}">
         {% include "question_form.html" with context %}
-        <input type = "submit" value = "Add next question">
+        <input type = "submit" value = "Add this question">
+        <input type="button" onclick="this.form.action = '/'; this.form.method = 'GET'; this.form.submit() " value="Return">
     </form>
 </body>
 </html>

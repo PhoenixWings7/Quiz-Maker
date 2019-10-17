@@ -10,7 +10,7 @@ def create_data_headers():
 DATA_HEADERS = create_data_headers()
 
 
-def create_new_csv_file(filename, headers):
+def create_new_csv_file(filename, headers=DATA_HEADERS):
     with open(filename, "w") as file:
         data_dict = csv.DictWriter(file, headers)
         data_dict.writeheader()

@@ -11,7 +11,7 @@ TEMPLATES_ROUTES = {"main_page" : "main.html",
 
 
 
-@app.route('/')
+@app.route('/', methods=["GET", "POST"])
 def main_page():
     return render_template(TEMPLATES_ROUTES["main_page"])
 
@@ -24,22 +24,23 @@ def new_quiz_route():
 
     if request.method == "POST":
         quiz_title = request.form["quiz_title"]
+        filename = quiz_title.lower()
+        data_handler.create_new_csv_file(filename)
+        return redirect(url_for("next_question_form", quiz_title = quiz_title))
+
+
+@app.route('/new-quiz-next/<quiz_title>', methods = ["GET", "POST"])
+def next_question_form(quiz_title=None):
+    if request.method == "GET":
+        answer_ids = ["answer_" + str(ord_num) for ord_num in range(2, data_handler.NUM_OF_QUESTIONS + 1)]
+        return render_template(TEMPLATES_ROUTES["next question form"], answer_ids = answer_ids, quiz_title = quiz_title)
+    if request.method == "POST":
+        quiz_title = request.form["quiz_title"]
         question_data = dict(request.form)
         question_data.pop("quiz_title")
-
-        data_handler.add_question_to_file(question_data, quiz_title)
-        return redirect(url_for("next_question_form"))
-
-
-@app.route('/new-quiz-next', methods = ["GET", "POST"])
-def next_question_form():
-    if request.method == "GET":
-        quiz_title =
+        data_handler.save_dict_data_to_file(quiz_title, question_data)
         answer_ids = ["answer_" + str(ord_num) for ord_num in range(2, data_handler.NUM_OF_QUESTIONS + 1)]
-        return render_template(TEMPLATES_ROUTES["next question form"],quiz_title = quiz_title, answer_ids = answer_ids)
-    if request.method == "POST":
-        answer_ids = ["answer_" + str(ord_num) for ord_num in range(2, data_handler.NUM_OF_QUESTIONS + 1)]
-        return render_template(TEMPLATES_ROUTES["next question form"], answer_ids = answer_ids)
+        return render_template(TEMPLATES_ROUTES["next question form"], answer_ids = answer_ids, quiz_title = quiz_title)
 
 
 @app.route('/quiz-list', methods = ["GET"])
