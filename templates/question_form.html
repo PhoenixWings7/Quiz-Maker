@@ -1,0 +1,26 @@
+
+<div>
+    <label for = "question">
+        <h3>Question</h3>
+    </label>
+    <input id = "question" name = "question" type = "text" required>
+</div>
+
+<br>
+
+<div>
+    <label for = "correct_answer">
+        <div style="color: green"><b>Correct answer</b></div>
+    </label>
+    <input type = "text" id = "correct_answer" name = "correct_answer" required>
+</div>
+
+{% for answer_id in answer_ids %}
+    <br>
+    <div>
+        <label for = "{{answer_id}}">
+            <div style="color: grey">Optional answer</div>
+        </label>
+        <input id = "{{answer_id}}" name = "{{answer_id}}" required>
+    </div>
+{% endfor %}
