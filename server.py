@@ -33,12 +33,15 @@ def new_quiz_route():
 def next_question_form(quiz_title=None):
     if request.method == "GET":
         answer_ids = ["answer_" + str(ord_num) for ord_num in range(2, data_handler.NUM_OF_QUESTIONS + 1)]
-        return render_template(TEMPLATES_ROUTES["next question form"], answer_ids = answer_ids, quiz_title = quiz_title)
+        return render_template(TEMPLATES_ROUTES["next question form"],
+                               answer_ids = answer_ids,
+                               quiz_title = quiz_title)
+
     if request.method == "POST":
         quiz_title = request.form["quiz_title"]
         question_data = dict(request.form)
         question_data.pop("quiz_title")
-        data_handler.save_dict_data_to_file(quiz_title, question_data)
+        data_handler.add_question_to_file(question_data, quiz_title)
         answer_ids = ["answer_" + str(ord_num) for ord_num in range(2, data_handler.NUM_OF_QUESTIONS + 1)]
         return render_template(TEMPLATES_ROUTES["next question form"], answer_ids = answer_ids, quiz_title = quiz_title)
 
