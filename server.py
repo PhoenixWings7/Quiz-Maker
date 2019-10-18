@@ -7,7 +7,7 @@ TEMPLATES_ROUTES = {"main_page" : "main.html",
                     "leaderboard" : "leaderboard.html",
                     "new quiz start" : "new_quiz.html",
                     "next question form" : "next_question.html",
-                    "quiz list": "quiz_list.html"}
+                    "quiz list" : "quiz_list.html"}
 
 
 
