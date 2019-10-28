@@ -1,18 +1,19 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <link rel = "stylesheet" href = "static/new_quiz.css">
     <meta charset="UTF-8">
     <title>Make a quiz</title>
 </head>
-<body style = "background-color: aquamarine">
-    <h1 align = "center" style = "color: deeppink">Make your own Quiz!</h1>
+<body>
+    <h1>Make your own Quiz!</h1>
 
-    <form align = "center" action = "/new-quiz" method = "post">
-        <label for = "quiz_title"><h2 style = "color: deeppink">Quiz title</h2></label>
+    <form action = "/new-quiz" method = "post">
+        <label for = "quiz_title"><h2>Quiz title</h2></label>
         <input type="text" id = "quiz_title" name = "quiz_title" required>
         <input type = "submit" value = "Add first question">
     </form>
-    <form align = "center" action = "/" method = "get">
+    <form action = "/" method = "get">
         <input type = "submit" value = "Return to main page">
     </form>
 </body>

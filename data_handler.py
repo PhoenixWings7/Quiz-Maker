@@ -1,6 +1,7 @@
 import csv
 
 NUM_OF_QUESTIONS = 4
+
 def create_data_headers():
     answer_ids = ["answer_" + str(ord_num) for ord_num in range(2, NUM_OF_QUESTIONS + 1)]
     data_headers = ["question", "correct_answer"] + answer_ids
@@ -8,6 +9,10 @@ def create_data_headers():
 
 
 DATA_HEADERS = create_data_headers()
+
+
+def add_title_to_title_file():
+    pass
 
 
 def create_new_csv_file(filename, headers=DATA_HEADERS):
@@ -40,3 +45,7 @@ def add_question_to_file(question_data, quiz_title):
     except FileNotFoundError:
         create_new_quiz_file(question_data, quiz_title)
     return
+
+
+def import_quiz_data_from_file():
+    pass

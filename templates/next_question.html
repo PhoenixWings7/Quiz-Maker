@@ -1,13 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <link rel = "stylesheet" href = "static/new_quiz.css">
     <meta charset="UTF-8">
     <title>Add your question!</title>
 </head>
-<body style = "background-color: aquamarine">
-    <h1 align = "center" style = "color: deeppink">Make your own Quiz!</h1>
+<body>
+    <h1>Make your own Quiz!</h1>
 
-    <form align = "center" action = "/new-quiz-next/{{quiz_title}}" method = "post">
+    <form action = "/new-quiz-next/{{quiz_title}}" method = "post">
         <input type="hidden" id = "quiz_title" name = "quiz_title" value="{{quiz_title}}">
         {% include "question_form.html" with context %}
         <input type = "submit" value = "Add this question">
