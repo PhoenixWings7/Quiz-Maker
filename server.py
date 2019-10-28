@@ -24,8 +24,10 @@ def new_quiz_route():
 
     if request.method == "POST":
         quiz_title = request.form["quiz_title"]
-        filename = quiz_title.lower()
-        data_handler.create_new_csv_file(filename)
+        id_ = 1
+        filename = "abdc"
+        data_handler.create_new_db_table(filename)
+        data_handler.add_quiz_title_to_database(id_, quiz_title, filename)
         return redirect(url_for("next_question_form", quiz_title = quiz_title))
 
 
