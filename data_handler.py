@@ -29,6 +29,10 @@ def create_database_column_titles():
     return column_titles
 
 
+def validate_title(title):
+    pass
+
+
 def create_connection_string():
     user_name = os.environ.get("PSQL_USER_NAME")
     password = os.environ.get("PSQL_PASSWORD")
@@ -65,6 +69,14 @@ def connection_handler(function):
         return ret_value
 
     return wrapper
+
+
+@connection_handler
+def get_new_id(cursor, table = "quiz_titles"):
+    statement_str = "SELECT MAX(id) FROM {table}".format(table = table)
+    cursor.execute(statement_str)
+    max_existing_id_num = cursor.fetchone()['max']
+    return max_existing_id_num + 1
 
 
 @connection_handler

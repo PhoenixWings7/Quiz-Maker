@@ -24,10 +24,10 @@ def new_quiz_route():
 
     if request.method == "POST":
         quiz_title = request.form["quiz_title"]
-        id_ = 1
-        filename = "abdc"
-        data_handler.create_new_db_table(filename)
+        id_ = data_handler.get_new_id()
+        filename = "abdc5"
         data_handler.add_quiz_title_to_database(id_, quiz_title, filename)
+        data_handler.create_new_db_table(filename)
         return redirect(url_for("next_question_form", quiz_title = quiz_title))
 
 
