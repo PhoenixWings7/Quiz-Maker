@@ -1,25 +1,33 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Quiz Maker</title>
-    <link rel = "stylesheet" href="static/main.css">
-</head>
-<body>
-
-    <h1>Welcome to the Quiz Maker!</h1>
-    <br>
-    <h2>Click on the left picture to make a new quiz or the right picture to join a quiz.</h2>
-
-    <div>
-    <a href = "/new-quiz">
-        <img id = "new_quiz_img" name = "image" src = "static/images/new_quiz.png" height = "300">
-    </a>
-    <a href = "/quiz-list">
-        <img id = "join_quiz_img" name = "image" src = "static/images/quiz_time.png" height = "300">
-    </a>
-
-    </div>
-
-</body>
+    <head>
+        <title>Quiz Maker</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"></script>
+        <link rel = "stylesheet" href="static/main.css">
+    </head>
+    <body>
+        <div class="jumbotron text-center">
+            <h1>Welcome to the Quiz Maker!</h1>
+        </div>
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-6">
+                    <a href="/new-quiz">
+                        <img id="new_quiz_img" name="image" src="static/images/new_quiz.png" height="300">
+                    </a>
+                    <h2>Make a new quiz</h2>
+                </div>
+                <div class="col-sm-6">
+                    <a href="/quiz-list">
+                        <img id="join_quiz_img" name="image" src="static/images/quiz_time.png" height="300">
+                    </a>
+                    <h2>Join a quiz</h2>
+                </div>
+            </div>
+    </body>
 </html>
