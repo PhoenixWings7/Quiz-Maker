@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request, redirect, url_for, flash
 import data_handler
 
+FLASK_APP = "server.py"
 app = Flask(__name__)
 # Set the secret key to some random bytes. Keep this really secret! The app doesn't work without it.
 app.secret_key = b'_5#y2L"F4Quwsn/uwsj]/'
@@ -34,11 +35,11 @@ def new_quiz_route():
             flash(VALIDATION_MESSAGES["invalid title"])
             return redirect(url_for("new_quiz_route"))
         id_ = data_handler.get_new_id()
-        filename = "abdc7"
         title_uniqueness_validation = data_handler.add_quiz_title_to_database(id_, quiz_title, filename)
         if not title_uniqueness_validation:
             flash(VALIDATION_MESSAGES["title not unique"])
             return redirect(url_for("new_quiz_route"))
+        filename = quiz_title.lower().replace(" ", "_")
         data_handler.create_new_db_table(filename)
         return redirect(url_for("next_question_form", quiz_title = quiz_title))
 
