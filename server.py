@@ -1,13 +1,18 @@
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect, url_for, flash
 import data_handler
 
 app = Flask(__name__)
+# Set the secret key to some random bytes. Keep this really secret! The app doesn't work without it.
+app.secret_key = b'_5#y2L"F4Quwsn/uwsj]/'
 
 TEMPLATES_ROUTES = {"main_page" : "main.html",
                     "leaderboard" : "leaderboard.html",
                     "new quiz start" : "new_quiz.html",
                     "next question form" : "next_question.html",
                     "quiz list" : "quiz_list.html"}
+
+VALIDATION_MESSAGES = {"invalid title" : '''Your title includes some special signs. You're only allowed to use
+                                            letters and spaces. Try again!'''}
 
 
 
@@ -24,8 +29,11 @@ def new_quiz_route():
 
     if request.method == "POST":
         quiz_title = request.form["quiz_title"]
+        if not data_handler.validate_title(quiz_title):
+            flash(VALIDATION_MESSAGES["invalid title"])
+            return redirect(url_for("new_quiz_route"))
         id_ = data_handler.get_new_id()
-        filename = "abdc5"
+        filename = "abdc7"
         data_handler.add_quiz_title_to_database(id_, quiz_title, filename)
         data_handler.create_new_db_table(filename)
         return redirect(url_for("next_question_form", quiz_title = quiz_title))

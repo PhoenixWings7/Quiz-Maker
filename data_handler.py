@@ -30,7 +30,10 @@ def create_database_column_titles():
 
 
 def validate_title(title):
-    pass
+    if title.replace(" ", "").isalpha():
+        return True
+    else:
+        return False
 
 
 def create_connection_string():

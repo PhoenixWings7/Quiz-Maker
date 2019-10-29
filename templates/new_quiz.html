@@ -6,6 +6,16 @@
     <title>Make a quiz</title>
 </head>
 <body>
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+        <ul class=flashes>
+        {% for message in messages %}
+          <li>{{ message }}</li>
+        {% endfor %}
+        </ul>
+      {% endif %}
+    {% endwith %}
+
     <h1>Make your own Quiz!</h1>
 
     <form action = "/new-quiz" method = "post">
