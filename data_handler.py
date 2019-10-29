@@ -92,9 +92,12 @@ def create_new_db_table(cursor, table_name):
 
 @connection_handler
 def add_quiz_title_to_database(cursor, id_, title, filename):
-    statement_str = "INSERT INTO quiz_titles VALUES ({}, '{}', '{}')".format(id_, title, filename)
-    cursor.execute(statement_str)
-    return
+    try:
+        statement_str = "INSERT INTO quiz_titles VALUES ({}, '{}', '{}')".format(id_, title, filename)
+        cursor.execute(statement_str)
+    except psycopg2.errors.UniqueViolation:
+        return False
+    return True
 
 
 def add_question_to_db():

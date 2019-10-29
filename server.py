@@ -12,7 +12,8 @@ TEMPLATES_ROUTES = {"main_page" : "main.html",
                     "quiz list" : "quiz_list.html"}
 
 VALIDATION_MESSAGES = {"invalid title" : '''Your title includes some special signs. You're only allowed to use
-                                            letters and spaces. Try again!'''}
+                                            letters and spaces. Try again!''',
+                       "title not unique" : '''There's already a quiz with that title! Try again.'''}
 
 
 
@@ -34,7 +35,10 @@ def new_quiz_route():
             return redirect(url_for("new_quiz_route"))
         id_ = data_handler.get_new_id()
         filename = "abdc7"
-        data_handler.add_quiz_title_to_database(id_, quiz_title, filename)
+        title_uniqueness_validation = data_handler.add_quiz_title_to_database(id_, quiz_title, filename)
+        if not title_uniqueness_validation:
+            flash(VALIDATION_MESSAGES["title not unique"])
+            return redirect(url_for("new_quiz_route"))
         data_handler.create_new_db_table(filename)
         return redirect(url_for("next_question_form", quiz_title = quiz_title))
 
