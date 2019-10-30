@@ -73,7 +73,8 @@ def next_question_form(quiz_id, quiz_title=None):
 @app.route('/quiz-list', methods = ["GET"])
 def quiz_list():
     if request.method == "GET":
-        return render_template(TEMPLATES_ROUTES["quiz list"])
+        quiz_list = data_handler.get_quiz_titles_list_form_db()
+        return render_template(TEMPLATES_ROUTES["quiz list"], quiz_list = quiz_list)
 
 
 if __name__ == '__main__':

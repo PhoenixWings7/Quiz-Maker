@@ -23,7 +23,25 @@
                     </div>
                 </div>
         </div>
-    <h1 style="color: #9C1A1C">Oooops! There's nothing here at the moment!</h1>
-    <p>Don't worry. There will be your Quiz List here. Here's the button that will take you to the main page:</p>
+    <h1 style="color: #9C1A1C">Quizzes in Quiz Maker database:</h1>
+
+    <table id = "quiz_list">
+        <thead>
+            <th>
+                <h3>Quiz title</h3>
+            </th>
+        </thead>
+
+        <tbody>
+            {% for quiz_title in quiz_list %}
+            <tr>
+                <td>
+                    {{ quiz_title }}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+
+    </table>
 </body>
 </html>

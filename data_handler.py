@@ -115,3 +115,22 @@ def add_answers_to_db(cursor, question_data, quiz_id):
         cursor.execute(statement_str, {'answer' : answer, 'is_correct' : is_correct,
                                    'question_id' : question_id})
     return
+
+
+@connection_handler
+def get_quiz_titles_list_form_db(cursor):
+    statement_str = '''SELECT title FROM quiz_titles'''
+    cursor.execute(statement_str)
+    quiz_titles = cursor.fetchall()
+    quiz_titles = [title['title'] for title in quiz_titles]
+    return quiz_titles
+
+
+@connection_handler
+def get_questions_list_from_db(cursor, quiz_id):
+    statement_str = '''SELECT question FROM quiz_questions 
+                        WHERE question_id = %(quiz_id)s'''
+    cursor.execute(statement_str, {"quiz_id" : quiz_id})
+    questions = cursor.fetchall()
+    questions = [question['question'] for question in questions]
+    return questions
