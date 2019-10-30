@@ -7,8 +7,9 @@
 </head>
 <body>
     <h1>Make your own Quiz!</h1>
+    <h2 id = "quiz_title">Your Quiz title: {{ quiz_title }}</h2>
 
-    <form action = "/new-quiz-next/{{quiz_title}}" method = "post">
+    <form action = "/new-quiz-next/{{quiz_id}}" method = "post">
         <input type="hidden" id = "quiz_title" name = "quiz_title" value="{{quiz_title}}">
         {% include "question_form.html" with context %}
         <input type = "submit" value = "Add this question">

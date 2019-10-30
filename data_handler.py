@@ -1,32 +1,40 @@
-import psycopg2, psycopg2.extras, os
+import psycopg2, psycopg2.extras, psycopg2.errors, os
 
 NUM_OF_QUESTIONS = 4
 
-def create_data_headers():
+
+def create_answer_names():
     answer_ids = ["answer_" + str(ord_num) for ord_num in range(2, NUM_OF_QUESTIONS + 1)]
-    data_headers = ["question", "correct_answer"] + answer_ids
+    answer_names = ["correct_answer"] + answer_ids
+    return answer_names
+
+ANSWER_NAMES = create_answer_names()
+
+
+def create_data_headers():
+
+    data_headers = ["question"] + ANSWER_NAMES
     return data_headers
 
 
 DATA_HEADERS = create_data_headers()
 
 
-def create_data_headers_and_data_sort_dict():
-    headers_dict = {}
-    for header in DATA_HEADERS:
-        headers_dict[header] = "TEXT NOT NULL"
-    return headers_dict
-
-
-def create_database_column_titles():
-    headers_dict = create_data_headers_and_data_sort_dict()
-    column_titles = ""
-    for header in DATA_HEADERS:
-        column_titles+=header + " " + headers_dict[header]
-        if header == DATA_HEADERS[-1]:
-            return column_titles
-        column_titles+=", "
-    return column_titles
+# def create_data_headers_vs_data_sort_dict(data_sort):
+#     headers_dict = {}
+#     for header in DATA_HEADERS:
+#         headers_dict[header] = data_sort
+#     return headers_dict
+#
+#
+# def create_db_headers_vs_values_str(headers_dict, pair_seperator, multi_seperator):
+#     values_str = ""
+#     for header in DATA_HEADERS:
+#         values_str+=header + pair_seperator + headers_dict[header]
+#         if header == DATA_HEADERS[-1]:
+#             return values_str
+#         values_str+=multi_seperator
+#     return values_str
 
 
 def validate_title(title):
@@ -74,31 +82,68 @@ def connection_handler(function):
     return wrapper
 
 
-@connection_handler
-def get_new_id(cursor, table = "quiz_titles"):
-    statement_str = "SELECT MAX(id) FROM {table}".format(table = table)
-    cursor.execute(statement_str)
-    max_existing_id_num = cursor.fetchone()['max']
-    return max_existing_id_num + 1
+# @connection_handler
+# def get_new_quiz_id(cursor):
+#     statement_str = "SELECT MAX(quiz_id) FROM ids_relations"
+#     cursor.execute(statement_str)
+#     max_existing_id_num = cursor.fetchone()['max']
+#     return max_existing_id_num + 1
+
+
+# @connection_handler
+# def get_new_questionid(cursor):
+#     statement_str = "SELECT MAX(quiz_id) FROM ids_relations"
+#     cursor.execute(statement_str)
+#     max_existing_id_num = cursor.fetchone()['max']
+#     return max_existing_id_num + 1
 
 
 @connection_handler
-def create_new_db_table(cursor, table_name):
-    column_titles = create_database_column_titles()
-    statement_str = "CREATE TABLE {table_name} ".format(table_name = table_name) + "(" + column_titles + ")"
-    cursor.execute(statement_str)
-    return
+def get_quiz_id(cursor, title):
+    statement_str = "SELECT quiz_id FROM quiz_titles WHERE title = %(title)s"
+    cursor.execute(statement_str, {"title" : title})
+    quiz_id = cursor.fetchone()['quiz_id']
+
+    return quiz_id
 
 
 @connection_handler
-def add_quiz_title_to_database(cursor, id_, title, filename):
+def get_question_id(cursor, quiz_id):
+    statement_str = "SELECT question_id FROM quiz_questions WHERE quiz_id = %(quiz_id)s"
+    cursor.execute(statement_str, {"quiz_id" : quiz_id})
+    question_id = cursor.fetchone()['question_id']
+
+    return question_id
+
+
+@connection_handler
+def add_quiz_title_to_database(cursor, title):
     try:
-        statement_str = "INSERT INTO quiz_titles VALUES ({}, '{}', '{}')".format(id_, title, filename)
-        cursor.execute(statement_str)
+        statement_str = "INSERT INTO quiz_titles VALUES (DEFAULT , %(title)s)"
+        cursor.execute(statement_str, {"title" : title})
     except psycopg2.errors.UniqueViolation:
         return False
     return True
 
 
-def add_question_to_db():
-    pass
+@connection_handler
+def add_question_to_database(cursor, question, quiz_id):
+    statement_str = '''INSERT INTO quiz_questions 
+                        VALUES (DEFAULT, %(question)s, %(quiz_id)s)'''
+    cursor.execute(statement_str, {"question" : question, "quiz_id" : quiz_id})
+    return
+
+
+@connection_handler
+def add_answers_to_db(cursor, question_data, quiz_id):
+    question_id = get_question_id(quiz_id)
+
+    for answer_name in ANSWER_NAMES:
+        answer = question_data[answer_name]
+        is_correct = (answer_name == 'correct_answer')
+        statement_str = '''INSERT INTO answers 
+        VALUES (DEFAULT, %(answer)s, %(is_correct)s, %(question_id)s)'''
+
+        cursor.execute(statement_str, {'answer' : answer, 'is_correct' : is_correct,
+                                   'question_id' : question_id})
+    return
