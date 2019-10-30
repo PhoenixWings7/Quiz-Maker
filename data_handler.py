@@ -20,22 +20,6 @@ def create_data_headers():
 DATA_HEADERS = create_data_headers()
 
 
-# def create_data_headers_vs_data_sort_dict(data_sort):
-#     headers_dict = {}
-#     for header in DATA_HEADERS:
-#         headers_dict[header] = data_sort
-#     return headers_dict
-#
-#
-# def create_db_headers_vs_values_str(headers_dict, pair_seperator, multi_seperator):
-#     values_str = ""
-#     for header in DATA_HEADERS:
-#         values_str+=header + pair_seperator + headers_dict[header]
-#         if header == DATA_HEADERS[-1]:
-#             return values_str
-#         values_str+=multi_seperator
-#     return values_str
-
 
 def validate_title(title):
     if title.replace(" ", "").isalpha():
