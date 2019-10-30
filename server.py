@@ -31,34 +31,43 @@ def new_quiz_route():
 
     if request.method == "POST":
         quiz_title = request.form["quiz_title"]
+
         if not data_handler.validate_title(quiz_title):
             flash(VALIDATION_MESSAGES["invalid title"])
             return redirect(url_for("new_quiz_route"))
-        id_ = data_handler.get_new_id()
-        filename = quiz_title.lower().replace(" ", "_")
-        title_uniqueness_validation = data_handler.add_quiz_title_to_database(id_, quiz_title, filename)
+        title_uniqueness_validation = data_handler.add_quiz_title_to_database(quiz_title)
+
         if not title_uniqueness_validation:
             flash(VALIDATION_MESSAGES["title not unique"])
             return redirect(url_for("new_quiz_route"))
-        data_handler.create_new_db_table(filename)
-        return redirect(url_for("next_question_form", quiz_title = quiz_title))
+
+        id_ = data_handler.get_quiz_id(quiz_title)
+
+        return redirect(url_for("next_question_form", quiz_title = quiz_title, quiz_id = id_))
 
 
-@app.route('/new-quiz-next/<quiz_title>', methods = ["GET", "POST"])
-def next_question_form(quiz_title=None):
+@app.route('/new-quiz-next/<quiz_id>', methods = ["GET", "POST"])
+def next_question_form(quiz_id, quiz_title=None):
     if request.method == "GET":
         answer_ids = ["answer_" + str(ord_num) for ord_num in range(2, data_handler.NUM_OF_QUESTIONS + 1)]
         return render_template(TEMPLATES_ROUTES["next question form"],
                                answer_ids = answer_ids,
-                               quiz_title = quiz_title)
+                               quiz_title = quiz_title,
+                               quiz_id = quiz_id)
 
     if request.method == "POST":
         quiz_title = request.form["quiz_title"]
+        question = request.form["question"]
+
+        data_handler.add_question_to_database(question, quiz_id)
+
         question_data = dict(request.form)
         question_data.pop("quiz_title")
-        data_handler.add_question_to_file(question_data, quiz_title)
+        data_handler.add_answers_to_db(question_data, quiz_id)
+
         answer_ids = ["answer_" + str(ord_num) for ord_num in range(2, data_handler.NUM_OF_QUESTIONS + 1)]
-        return render_template(TEMPLATES_ROUTES["next question form"], answer_ids = answer_ids, quiz_title = quiz_title)
+        return render_template(TEMPLATES_ROUTES["next question form"],
+                               answer_ids = answer_ids, quiz_title = quiz_title, quiz_id = quiz_id)
 
 
 @app.route('/quiz-list', methods = ["GET"])
