@@ -163,12 +163,6 @@ COPY public.answers (answer_id, answer, is_correct, question_id) FROM stdin;
 
 COPY public.quiz_questions (question_id, question, quiz_id) FROM stdin;
 1	Next?	5
-2	Next?	5
-3	Next?	5
-4	Next?	5
-5	Next?	5
-6	Next?	5
-7	Next?	5
 8	Dlaczego świeci słońce?	8
 9	Why Codecool is in Warsaw?	9
 \.
