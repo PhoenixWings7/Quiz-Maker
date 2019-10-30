@@ -66,22 +66,6 @@ def connection_handler(function):
     return wrapper
 
 
-# @connection_handler
-# def get_new_quiz_id(cursor):
-#     statement_str = "SELECT MAX(quiz_id) FROM ids_relations"
-#     cursor.execute(statement_str)
-#     max_existing_id_num = cursor.fetchone()['max']
-#     return max_existing_id_num + 1
-
-
-# @connection_handler
-# def get_new_questionid(cursor):
-#     statement_str = "SELECT MAX(quiz_id) FROM ids_relations"
-#     cursor.execute(statement_str)
-#     max_existing_id_num = cursor.fetchone()['max']
-#     return max_existing_id_num + 1
-
-
 @connection_handler
 def get_quiz_id(cursor, title):
     statement_str = "SELECT quiz_id FROM quiz_titles WHERE title = %(title)s"
