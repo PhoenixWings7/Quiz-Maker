@@ -30,135 +30,147 @@ CREATE EXTENSION IF NOT EXISTS plpgsql WITH SCHEMA pg_catalog;
 COMMENT ON EXTENSION plpgsql IS 'PL/pgSQL procedural language';
 
 
+--
+-- Name: answers_answer_id_seq; Type: SEQUENCE; Schema: public; Owner: klaudia
+--
+
+CREATE SEQUENCE public.answers_answer_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.answers_answer_id_seq OWNER TO klaudia;
+
 SET default_tablespace = '';
 
 SET default_with_oids = false;
 
 --
--- Name: abdc1; Type: TABLE; Schema: public; Owner: klaudia
+-- Name: answers; Type: TABLE; Schema: public; Owner: klaudia
 --
 
-CREATE TABLE public.abdc1 (
-    question text NOT NULL,
-    correct_answer text NOT NULL,
-    answer_2 text NOT NULL,
-    answer_3 text NOT NULL,
-    answer_4 text NOT NULL
+CREATE TABLE public.answers (
+    answer_id integer DEFAULT nextval('public.answers_answer_id_seq'::regclass) NOT NULL,
+    answer text NOT NULL,
+    is_correct boolean NOT NULL,
+    question_id integer NOT NULL
 );
 
 
-ALTER TABLE public.abdc1 OWNER TO klaudia;
+ALTER TABLE public.answers OWNER TO klaudia;
 
 --
--- Name: abdc2; Type: TABLE; Schema: public; Owner: klaudia
+-- Name: quiz_questions; Type: TABLE; Schema: public; Owner: klaudia
 --
 
-CREATE TABLE public.abdc2 (
+CREATE TABLE public.quiz_questions (
+    question_id integer NOT NULL,
     question text NOT NULL,
-    correct_answer text NOT NULL,
-    answer_2 text NOT NULL,
-    answer_3 text NOT NULL,
-    answer_4 text NOT NULL
+    quiz_id integer NOT NULL
 );
 
 
-ALTER TABLE public.abdc2 OWNER TO klaudia;
+ALTER TABLE public.quiz_questions OWNER TO klaudia;
 
 --
--- Name: abdc3; Type: TABLE; Schema: public; Owner: klaudia
+-- Name: quiz_questions_question_id_seq; Type: SEQUENCE; Schema: public; Owner: klaudia
 --
 
-CREATE TABLE public.abdc3 (
-    question text NOT NULL,
-    correct_answer text NOT NULL,
-    answer_2 text NOT NULL,
-    answer_3 text NOT NULL,
-    answer_4 text NOT NULL
-);
+CREATE SEQUENCE public.quiz_questions_question_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
 
 
-ALTER TABLE public.abdc3 OWNER TO klaudia;
-
---
--- Name: abdc4; Type: TABLE; Schema: public; Owner: klaudia
---
-
-CREATE TABLE public.abdc4 (
-    question text NOT NULL,
-    correct_answer text NOT NULL,
-    answer_2 text NOT NULL,
-    answer_3 text NOT NULL,
-    answer_4 text NOT NULL
-);
-
-
-ALTER TABLE public.abdc4 OWNER TO klaudia;
+ALTER TABLE public.quiz_questions_question_id_seq OWNER TO klaudia;
 
 --
--- Name: abdc5; Type: TABLE; Schema: public; Owner: klaudia
+-- Name: quiz_questions_question_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: klaudia
 --
 
-CREATE TABLE public.abdc5 (
-    question text NOT NULL,
-    correct_answer text NOT NULL,
-    answer_2 text NOT NULL,
-    answer_3 text NOT NULL,
-    answer_4 text NOT NULL
-);
+ALTER SEQUENCE public.quiz_questions_question_id_seq OWNED BY public.quiz_questions.question_id;
 
-
-ALTER TABLE public.abdc5 OWNER TO klaudia;
 
 --
 -- Name: quiz_titles; Type: TABLE; Schema: public; Owner: klaudia
 --
 
 CREATE TABLE public.quiz_titles (
-    id integer NOT NULL,
-    title text NOT NULL,
-    filename text NOT NULL
+    quiz_id integer NOT NULL,
+    title text NOT NULL
 );
 
 
 ALTER TABLE public.quiz_titles OWNER TO klaudia;
 
 --
--- Data for Name: abdc1; Type: TABLE DATA; Schema: public; Owner: klaudia
+-- Name: quiz_titles_quiz_id_seq; Type: SEQUENCE; Schema: public; Owner: klaudia
 --
 
-COPY public.abdc1 (question, correct_answer, answer_2, answer_3, answer_4) FROM stdin;
+CREATE SEQUENCE public.quiz_titles_quiz_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.quiz_titles_quiz_id_seq OWNER TO klaudia;
+
+--
+-- Name: quiz_titles_quiz_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: klaudia
+--
+
+ALTER SEQUENCE public.quiz_titles_quiz_id_seq OWNED BY public.quiz_titles.quiz_id;
+
+
+--
+-- Name: quiz_questions question_id; Type: DEFAULT; Schema: public; Owner: klaudia
+--
+
+ALTER TABLE ONLY public.quiz_questions ALTER COLUMN question_id SET DEFAULT nextval('public.quiz_questions_question_id_seq'::regclass);
+
+
+--
+-- Name: quiz_titles quiz_id; Type: DEFAULT; Schema: public; Owner: klaudia
+--
+
+ALTER TABLE ONLY public.quiz_titles ALTER COLUMN quiz_id SET DEFAULT nextval('public.quiz_titles_quiz_id_seq'::regclass);
+
+
+--
+-- Data for Name: answers; Type: TABLE DATA; Schema: public; Owner: klaudia
+--
+
+COPY public.answers (answer_id, answer, is_correct, question_id) FROM stdin;
+23	great people here	t	9
+24	just because	f	9
+25	no place in Otwock...	f	9
+26	they like Warsaw very much	f	9
 \.
 
 
 --
--- Data for Name: abdc2; Type: TABLE DATA; Schema: public; Owner: klaudia
+-- Data for Name: quiz_questions; Type: TABLE DATA; Schema: public; Owner: klaudia
 --
 
-COPY public.abdc2 (question, correct_answer, answer_2, answer_3, answer_4) FROM stdin;
-\.
-
-
---
--- Data for Name: abdc3; Type: TABLE DATA; Schema: public; Owner: klaudia
---
-
-COPY public.abdc3 (question, correct_answer, answer_2, answer_3, answer_4) FROM stdin;
-\.
-
-
---
--- Data for Name: abdc4; Type: TABLE DATA; Schema: public; Owner: klaudia
---
-
-COPY public.abdc4 (question, correct_answer, answer_2, answer_3, answer_4) FROM stdin;
-\.
-
-
---
--- Data for Name: abdc5; Type: TABLE DATA; Schema: public; Owner: klaudia
---
-
-COPY public.abdc5 (question, correct_answer, answer_2, answer_3, answer_4) FROM stdin;
+COPY public.quiz_questions (question_id, question, quiz_id) FROM stdin;
+1	Next?	5
+2	Next?	5
+3	Next?	5
+4	Next?	5
+5	Next?	5
+6	Next?	5
+7	Next?	5
+8	Dlaczego świeci słońce?	8
+9	Why Codecool is in Warsaw?	9
 \.
 
 
@@ -166,14 +178,46 @@ COPY public.abdc5 (question, correct_answer, answer_2, answer_3, answer_4) FROM 
 -- Data for Name: quiz_titles; Type: TABLE DATA; Schema: public; Owner: klaudia
 --
 
-COPY public.quiz_titles (id, title, filename) FROM stdin;
-1	Test quiz	abdc
-2	Klaudia quiz	abdc2
-3	Jaka będzie pogoda	abdc3
-4	New quiz title	abdc4
-5	Haha quiz	abdc5
-6	Vitalij quiz	abdc6
+COPY public.quiz_titles (quiz_id, title) FROM stdin;
+1	New quiz title
+2	Klaudia quiz
+3	My new quiz
+4	Testing
+5	Jaka będzie pogoda
+6	Jakiś tytuł
+7	Haha
+8	Słońce
+9	Codecool quiz
 \.
+
+
+--
+-- Name: answers_answer_id_seq; Type: SEQUENCE SET; Schema: public; Owner: klaudia
+--
+
+SELECT pg_catalog.setval('public.answers_answer_id_seq', 26, true);
+
+
+--
+-- Name: quiz_questions_question_id_seq; Type: SEQUENCE SET; Schema: public; Owner: klaudia
+--
+
+SELECT pg_catalog.setval('public.quiz_questions_question_id_seq', 9, true);
+
+
+--
+-- Name: quiz_titles_quiz_id_seq; Type: SEQUENCE SET; Schema: public; Owner: klaudia
+--
+
+SELECT pg_catalog.setval('public.quiz_titles_quiz_id_seq', 9, true);
+
+
+--
+-- Name: quiz_questions quiz_questions_pk; Type: CONSTRAINT; Schema: public; Owner: klaudia
+--
+
+ALTER TABLE ONLY public.quiz_questions
+    ADD CONSTRAINT quiz_questions_pk PRIMARY KEY (question_id);
 
 
 --
@@ -181,21 +225,21 @@ COPY public.quiz_titles (id, title, filename) FROM stdin;
 --
 
 ALTER TABLE ONLY public.quiz_titles
-    ADD CONSTRAINT quiz_titles_pk PRIMARY KEY (id);
+    ADD CONSTRAINT quiz_titles_pk PRIMARY KEY (quiz_id);
 
 
 --
--- Name: quiz_titles_filename_uindex; Type: INDEX; Schema: public; Owner: klaudia
+-- Name: quiz_questions_question_id_uindex; Type: INDEX; Schema: public; Owner: klaudia
 --
 
-CREATE UNIQUE INDEX quiz_titles_filename_uindex ON public.quiz_titles USING btree (filename);
+CREATE UNIQUE INDEX quiz_questions_question_id_uindex ON public.quiz_questions USING btree (question_id);
 
 
 --
--- Name: quiz_titles_id_uindex; Type: INDEX; Schema: public; Owner: klaudia
+-- Name: quiz_titles_quiz_id_uindex; Type: INDEX; Schema: public; Owner: klaudia
 --
 
-CREATE UNIQUE INDEX quiz_titles_id_uindex ON public.quiz_titles USING btree (id);
+CREATE UNIQUE INDEX quiz_titles_quiz_id_uindex ON public.quiz_titles USING btree (quiz_id);
 
 
 --
