@@ -47,12 +47,11 @@ def new_quiz_route():
 
 
 @app.route('/new-quiz-next/<quiz_id>', methods = ["GET", "POST"])
-def next_question_form(quiz_id, quiz_title=None):
+def next_question_form(quiz_id):
     if request.method == "GET":
         answer_ids = ["answer_" + str(ord_num) for ord_num in range(2, data_handler.NUM_OF_QUESTIONS + 1)]
         return render_template(TEMPLATES_ROUTES["next question form"],
                                answer_ids = answer_ids,
-                               quiz_title = quiz_title,
                                quiz_id = quiz_id)
 
     if request.method == "POST":
@@ -67,7 +66,7 @@ def next_question_form(quiz_id, quiz_title=None):
 
         answer_ids = ["answer_" + str(ord_num) for ord_num in range(2, data_handler.NUM_OF_QUESTIONS + 1)]
         return render_template(TEMPLATES_ROUTES["next question form"],
-                               answer_ids = answer_ids, quiz_title = quiz_title, quiz_id = quiz_id)
+                               answer_ids = answer_ids, quiz_id = quiz_id)
 
 
 @app.route('/quiz-list', methods = ["GET"])

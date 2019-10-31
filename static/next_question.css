@@ -1,0 +1,16 @@
+body {
+    background-color: aquamarine;
+    text-align: center;
+}
+
+h1 {
+    color: deeppink;
+}
+
+h2 {
+    color: deeppink;
+}
+
+.optional_answers {
+    color: grey;
+}

@@ -1,12 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <link rel = "stylesheet" href = "static/new_quiz.css">
-    <meta charset="UTF-8">
     <title>Add your question!</title>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css">
+    <link rel = "stylesheet" href = "static/next_question.css">
 </head>
 <body>
-    <h1>Make your own Quiz!</h1>
+    <div class="jumbotron text-center">
+        <div class="col-sm-6">
+            <h1>Make your own Quiz!</h1>
+        </div>
+
+    </div>
     <h2 id = "quiz_title">Your Quiz title: {{ quiz_title }}</h2>
 
     <form action = "/new-quiz-next/{{quiz_id}}" method = "post">
