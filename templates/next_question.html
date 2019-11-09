@@ -4,22 +4,25 @@
     <title>Add your question!</title>
     <meta charset="UTF-8">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css">
-    <link rel = "stylesheet" href = "static/next_question.css">
+    <link rel = "stylesheet" href = "/static/question_page.css">
 </head>
 <body>
     <div class="jumbotron text-center">
-        <div class="col-sm-6">
+        <div class="col-sm-12">
             <h1>Make your own Quiz!</h1>
         </div>
 
     </div>
-    <h2 id = "quiz_title">Your Quiz title: {{ quiz_title }}</h2>
 
-    <form action = "/new-quiz-next/{{quiz_id}}" method = "post">
-        <input type="hidden" id = "quiz_title" name = "quiz_title" value="{{quiz_title}}">
-        {% include "question_form.html" with context %}
-        <input type = "submit" value = "Add this question">
-        <input type="button" onclick="this.form.action = '/'; this.form.method = 'GET'; this.form.submit() " value="Return">
-    </form>
+    <div  class = "body_content">
+{#        <h2 id = "quiz_title">Your Quiz title: {{ quiz_title }}</h2>#}
+
+        <form action = "/new-quiz-next/{{quiz_id}}" method = "post">
+            <input type="hidden" id = "quiz_title" name = "quiz_title" value="{{quiz_title}}">
+            {% include "question_form.html" with context %}
+            <input type = "submit" value = "Add this question">
+            <input type="button" onclick="this.form.action = '/'; this.form.method = 'GET'; this.form.submit() " value="Return">
+        </form>
+    </div>
 </body>
 </html>

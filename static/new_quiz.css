@@ -3,6 +3,10 @@ body {
     text-align: center;
 }
 
+.body_content {
+    margin: 10%;
+}
+
 h1 {
     color: deeppink;
 }
