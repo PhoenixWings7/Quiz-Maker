@@ -1,10 +1,12 @@
+import os
 from flask import Flask, render_template, request, redirect, url_for, flash
 import data_handler
+import user_functions
 
 FLASK_APP = "server.py"
 app = Flask(__name__)
 # Set the secret key to some random bytes. Keep this really secret! The app doesn't work without it.
-app.secret_key = b'_5#y2L"F4Quwsn/uwsj]/'
+app.secret_key = os.urandom(24)
 
 TEMPLATES_ROUTES = {"main_page" : "main.html",
                     "leaderboard" : "leaderboard.html",
@@ -19,17 +21,11 @@ VALIDATION_MESSAGES = {"invalid title" : '''Your title includes some special sig
 
 
 
-def log_in(username, password):
-    pass
-
-
-def log_out(username):
-    pass
-
 
 @app.route('/', methods=["GET", "POST"])
 def main_page():
-    return render_template(TEMPLATES_ROUTES["main_page"])\
+    username = user_functions.user_logged_in()
+    return render_template(TEMPLATES_ROUTES["main_page"], username = username)
 
 @app.route('/sign_up', methods=["GET", "POST"])
 def sign_up():

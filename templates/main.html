@@ -20,21 +20,25 @@
         </div>
     </div>
 
-    <button class="open-button" onclick="openForm()">Sign in or Sign up</button>
+    {% if not username %}
+        <button class="open-button" onclick="openForm()">Sign in or Sign up</button>
 
-    <div class="form-popup" id="myForm">
-      <form action="/" class="form-container" method="post">
-          <label><h4>Login</h4></label><label><a href="/sign_up"><h3 id="sign_up">Sign up</h3></a></label>
+        <div class="form-popup" id="myForm">
+          <form action="/" class="form-container" method="post">
+              <label><h4>Login</h4></label><label><a href="/sign_up"><h3 id="sign_up">Sign up</h3></a></label>
 
-        <input type="text" placeholder="Enter login" name="login" required>
+            <input type="text" placeholder="Enter login" name="login" required>
 
-        <label for="psw"><h4>Password</h4></label>
-        <input type="password" placeholder="Enter Password" name="psw" required>
+            <label for="psw"><h4>Password</h4></label>
+            <input type="password" placeholder="Enter Password" name="psw" required>
 
-        <button type="submit" class="btn">Login</button>
-        <button type="button" class="btn cancel" onclick="closeForm()">Close</button>
-      </form>
-    </div>
+            <button type="submit" class="btn">Login</button>
+            <button type="button" class="btn cancel" onclick="closeForm()">Close</button>
+          </form>
+        </div>
+    {% else %}
+        User: {{ username }}
+    {% endif %}
 
     <script>
     function openForm() {
