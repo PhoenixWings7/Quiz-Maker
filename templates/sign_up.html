@@ -6,38 +6,60 @@
     <div class="user_info">
         <h1>Add new user</h1>
 
-        <form action="{{ user_to_edit[0] if user_to_edit else '/sign_up' }}" method="POST">
-            <input type="hidden" value="{{ user_to_edit[0] if user_to_edit else ''}}" name="story_id">
+        <form action="/sign_up" method="POST">
+            <input type="hidden" name="user_id" value="{{ story_to_edit['user_id'] }}">
+
           <div class="form-group">
-            <label for="user_login">User login:</label>
-            <input required pattern=".{3,}" id="user_login" required title="3 characters minimum" type="text" class="form-control" value="{{ story_to_edit[1] if story_to_edit else 'your login'}}" name="user_login">
+            <label for="username">Username (login):</label>
+            <input required pattern=".{3,}" id="username" required name="username" title="3 characters minimum"
+                   type="text" class="form-control" value="{{ story_to_edit['username']}}">
           </div>
+
           <div class="form-group">
-            <label for="user_name">User name:</label>
-            <input required pattern=".{3,}" id="user_name" required title="3 characters minimum" type="text" class="form-control" value="{{ story_to_edit[2] if story_to_edit else 'your name'}}" name="user_name">
+            <label for="nickname">How do you want us to call you?</label>
+            <input required pattern=".{3,}" id="nickname" name="nickname" required title="3 characters minimum"
+                   type="text" class="form-control" value="{{ story_to_edit['nickname']}}">
           </div>
+
+            <div class="form-group">
+            <label for="email">Your email:</label>
+            <input required pattern=".{3,}" id="email" name="email" required title="3 characters minimum"
+                   type="text" class="form-control" value="{{ story_to_edit['email']}}">
+          </div>
+
           <div class="form-group">
             <label for="user_age">Age:</label>
-            <input type="number" min="18" max="100" step="1" class="form-control" id="user_age" placeholder="18+" value="{{ story_to_edit[4] if story_to_edit else ''}}" name="user_age">
+            <input type="number" id="user_age" name="user_age" min="18" max="100" step="1" class="form-control"
+                   placeholder="18+" value="{{ story_to_edit['user_age'] }}">
           </div>
+
           <div class="form-group">
             <label for="user_gender">Gender:</label>
-            <select name="user_gender">
+            <select id="user_gender" name="user_gender">
                 <option value="male" selected id="user_gender_selected" name="user_gender">male</option>
                 <option value="female" id="user_gender" name="user_gender">female</option>
             </select>
           </div>
+
           <div class="form-group">
             <label>User photo</label>
             <div class="user_photo">
-                <label class="user_photo" for="user_photo"></label>
-                <input type="file" class="user_photo" name="user_photo" id="user_photo">
+                <label class="user_photo" for="photo_link"></label>
+                <input type="file" class="user_photo" name="photo_link" id="photo_link">
             </div>
           </div>
+
           <div class="form-group">
-            <label for="user_about">About you:</label>
-            <textarea required class="form-control" id="user_about" name="user_about" rows="3">{{ story_to_edit[3] if story_to_edit else ''}}</textarea>
+            <label for="biography">About you:</label>
+            <textarea required class="form-control" id="biography" name="biography" rows="3">{{ story_to_edit['biography']}}</textarea>
           </div>
+
+        <div class="form-group">
+            <label for="password">Your password:</label>
+            <input required pattern=".{3,}" id="password" required name="password" title="3 characters minimum"
+                   type="password" class="form-control" value="{{ story_to_edit['username']}}">
+          </div>
+
           <input type="submit" class="btn btn-primary" name="action" value="{{ 'Update User information' if story_to_edit else 'Register new User' }}"></input>
             {% if story_to_edit %}
                 <input type="submit" class="btn btn-danger"  name="action" value="Delete">

@@ -24,12 +24,30 @@ VALIDATION_MESSAGES = {"invalid title" : '''Your title includes some special sig
 
 @app.route('/', methods=["GET", "POST"])
 def main_page():
-    username = user_functions.user_logged_in()
+
+    if request.method == "GET":
+        username = user_functions.user_logged_in()
+    if request.method == "POST":
+        username = request.form['username']
+        entered_password = request.form['password']
+        user_password = data_handler.get_user_hashed_password(username)
+        user_functions.log_in(entered_password, user_password)
+
     return render_template(TEMPLATES_ROUTES["main_page"], username = username)
+
+
 
 @app.route('/sign_up', methods=["GET", "POST"])
 def sign_up():
-    return render_template(TEMPLATES_ROUTES["sign_up"])
+    story_to_edit = {}
+    if request.method == "GET":
+        pass
+
+    if request.method == "POST":
+        user_data = dict(request.form)
+        data_handler.user_sign_up(user_data)
+
+    return render_template(TEMPLATES_ROUTES["sign_up"], story_to_edit = story_to_edit)
 
 
 @app.route('/new-quiz', methods = ["GET", "POST"])
