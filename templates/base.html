@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>{% block title %}{% endblock %}</title>
+        <link rel="shortcut icon" href="static/images/quiz_favicon.png" type="image/x-icon">
+        <link rel="icon" href="static/images/quiz_favicon.png" type="image/x-icon">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+        <link rel="stylesheet" href="{{url_for('static', filename='main.css')}}">
+    </head>
+    <header>
+        <div class="jumbotron text-center">
+                <div class="row" id="header">
+                    <div class="col-sm-2">
+                        <a href="/"><img src="static/images/quiz_time_logo.png"  id="go_to_home" alt="Return to main page"></a>
+                    </div>
+                    <div class="col-sm-8">
+                        <h1>Join or make your own Quiz!</h1>
+                    </div>
+                </div>
+        </div>
+    </header>
+    <body>
+        {% block content %}{% endblock %}
+    </body>
+    <footer>2019 Created by© <i>PhoenixWings7&Harnet69&GeorgeMaina</i></footer>
+</html>

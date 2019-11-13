@@ -1,46 +1,50 @@
-<!DOCTYPE html>
-<html lang="en">
-    <head>
-        <title>Quiz Maker</title>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css">
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js"></script>
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"></script>
-        <link rel="stylesheet" href="static/main.css">
-    </head>
-    <body>
-        <div class="jumbotron text-center">
-            <h1>Welcome to the Quiz Maker!</h1>
-        </div>
-        <div class="container">
-            <div class="row">
-                <div class="col-sm-6">
-                    <a href="/new-quiz">
-                        <img id="new_quiz_img" name="image" src="static/images/new_quiz.png" height="300">
-                    </a>
-                    <h2>Make a new quiz</h2>
-                </div>
-                <div class="col-sm-6">
-                    <a href="/quiz-list">
-                        <img id="join_quiz_img" name="image" src="static/images/quiz_time.png" height="300">
-                    </a>
-                    <h2>Join a quiz</h2>
-                </div>
-            </div>
-        </div>
-        <!-- Footer -->
-        <div class="jumbotron text-center" class="footer">
-            <div class="row">
-                <div class="col-sm-12">
-                    <p> © 2019 Copyright:
-                    <a href="https://github.com/PhoenixWings7" target="_blank">PhoenixWings7</a>,
-                    <a href="https://github.com/Harnet69" target="_blank">Harnet</a>
-                    </p>
+{% extends 'base.html' %}
 
-                </div>
+{% block title %}Welcome to the Quiz Maker!{% endblock %}
+
+{% block content %}
+    <div class="container" style="margin-top: 150px">
+        <div class="row">
+            <div class="col-sm-6">
+                <a href="/new-quiz" id="link">
+                    <img id="new_quiz_img" name="image" src="static/images/new_quiz.png" height="300">
+                </a>
+                <a id="link" href="/new-quiz"><h2>Make a new quiz</h2></a>
+            </div>
+            <div class="col-sm-6">
+                <a href="/quiz-list">
+                    <img id="join_quiz_img" name="image" src="static/images/quiz_time.png" height="300">
+                </a>
+                <a id="link" href="/quiz-list"><h2>Join a quiz</h2></a>
             </div>
         </div>
-        </body>
-</html>
+    </div>
+
+    <button class="open-button" onclick="openForm()">Sign in or Sign up</button>
+
+    <div class="form-popup" id="myForm">
+      <form action="/" class="form-container" method="post">
+          <label><h4>Login</h4></label><label><a href="/sign_up"><h3 id="sign_up">Sign up</h3></a></label>
+
+        <input type="text" placeholder="Enter login" name="login" required>
+
+        <label for="psw"><h4>Password</h4></label>
+        <input type="password" placeholder="Enter Password" name="psw" required>
+
+        <button type="submit" class="btn">Login</button>
+        <button type="button" class="btn cancel" onclick="closeForm()">Close</button>
+      </form>
+    </div>
+
+    <script>
+    function openForm() {
+      document.getElementById("myForm").style.display = "block";
+    }
+
+    function closeForm() {
+      document.getElementById("myForm").style.display = "none";
+    }
+    </script>
+
+
+{% endblock %}

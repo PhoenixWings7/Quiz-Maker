@@ -10,7 +10,8 @@ TEMPLATES_ROUTES = {"main_page" : "main.html",
                     "leaderboard" : "leaderboard.html",
                     "new quiz start" : "new_quiz.html",
                     "next question form" : "next_question.html",
-                    "quiz list" : "quiz_list.html"}
+                    "quiz list" : "quiz_list.html",
+                    "sign_up" : "sign_up.html"}
 
 VALIDATION_MESSAGES = {"invalid title" : '''Your title includes some special signs. You're only allowed to use
                                             letters and spaces. Try again!''',
@@ -28,7 +29,11 @@ def log_out(username):
 
 @app.route('/', methods=["GET", "POST"])
 def main_page():
-    return render_template(TEMPLATES_ROUTES["main_page"])
+    return render_template(TEMPLATES_ROUTES["main_page"])\
+
+@app.route('/sign_up', methods=["GET", "POST"])
+def sign_up():
+    return render_template(TEMPLATES_ROUTES["sign_up"])
 
 
 @app.route('/new-quiz', methods = ["GET", "POST"])
