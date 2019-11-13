@@ -29,19 +29,12 @@ def validate_title(title):
 
 
 def create_connection_string():
-    user_name = os.environ.get("PSQL_USER_NAME")
-    password = os.environ.get("PSQL_PASSWORD")
-    host = os.environ.get("PSQL_HOST")
-    database_name = os.environ.get("PSQL_DB_NAME")
+    db_url = os.environ.get("DATABASE_URL")
 
-    env_var_defined = user_name and password and host and database_name
+    env_var_defined = db_url
 
     if env_var_defined:
-        return 'postgresql://{user_name}:{password}@{host}/{database_name}'.format(
-            user_name=user_name,
-            password=password,
-            host=host,
-            database_name=database_name)
+        return db_url
     else:
         raise KeyError("Environmental variables not defined!")
 
