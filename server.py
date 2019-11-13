@@ -18,6 +18,14 @@ VALIDATION_MESSAGES = {"invalid title" : '''Your title includes some special sig
 
 
 
+def log_in(username, password):
+    pass
+
+
+def log_out(username):
+    pass
+
+
 @app.route('/', methods=["GET", "POST"])
 def main_page():
     return render_template(TEMPLATES_ROUTES["main_page"])
