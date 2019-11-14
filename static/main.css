@@ -137,3 +137,27 @@ footer {
 .user_info{
     margin-left: 20px;
 }
+
+/*table of list*/
+#quiz_list{
+    margin-left: 20px;
+}
+table {
+    border-spacing: 5px;
+}
+
+table, th, td {
+    border: 1px solid black;
+    border-collapse: collapse;
+    text-align: center;
+}
+
+
+th, td {
+    padding: 15px;
+}
+
+th {
+    background: darkgray;
+}
+
