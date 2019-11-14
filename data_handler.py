@@ -134,8 +134,10 @@ def get_questions_list_from_db(cursor, quiz_id):
 def get_user_hashed_password(cursor, username):
     statement_str = '''SELECT password FROM users WHERE username = %(username)s'''
     cursor.execute(statement_str, {'username' : username})
-
-    user_hashed_password = cursor.fetchone()['password']
+    try:
+        user_hashed_password = cursor.fetchone()['password']
+    except TypeError:
+        return
 
     return user_hashed_password
 

@@ -17,7 +17,9 @@ TEMPLATES_ROUTES = {"main_page" : "main.html",
 
 VALIDATION_MESSAGES = {"invalid title" : '''Your title includes some special signs. You're only allowed to use
                                             letters and spaces. Try again!''',
-                       "title not unique" : '''There's already a quiz with that title! Try again.'''}
+                       "title not unique" : '''There's already a quiz with that title! Try again.''',
+                       "user not in database" : '''You entered a wrong name or you aren't a Quiz Maker user. 
+                                                    Try again or sign up!'''}
 
 
 
@@ -32,11 +34,19 @@ def main_page():
         entered_password = request.form['password']
 
         db_password = data_handler.get_user_hashed_password(username)
-        '''retrieved password is memoryview so it has to be converted to bytes before hashing it in log_in function'''
-        user_password = db_password.tobytes()
-        salt = data_handler.get_password_salt(username)
+        if db_password:
+            '''retrieved password is memoryview so it has to be converted to bytes before hashing it in log_in function'''
+            user_password = db_password.tobytes()
+            salt = data_handler.get_password_salt(username)
 
-        user_functions.log_in(entered_password, user_password, salt)
+            is_logged_in = user_functions.log_in(entered_password, user_password, salt)
+        else:
+            flash(VALIDATION_MESSAGES["user not in database"])
+            return redirect(url_for("main_page"))
+
+        if not is_logged_in:
+            flash(VALIDATION_MESSAGES["user not in database"])
+            return redirect(url_for("main_page"))
 
     return render_template(TEMPLATES_ROUTES["main_page"], username = username)
 

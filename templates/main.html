@@ -20,6 +20,17 @@
         </div>
     </div>
 
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+        <ul class=flashes>
+        {% for message in messages %}
+            <br>
+          <h3 class="flash_message">{{ message }}</h3>
+        {% endfor %}
+        </ul>
+      {% endif %}
+    {% endwith %}
+
     {% if not username %}
         <button class="open-button" onclick="openForm()">Sign in or Sign up</button>
 
@@ -37,7 +48,8 @@
           </form>
         </div>
     {% else %}
-        User: {{ username }}
+        <br>
+        <h3 class="flash_message">User: {{ username }}</h3>
     {% endif %}
 
     <script>

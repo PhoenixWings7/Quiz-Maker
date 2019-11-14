@@ -137,3 +137,8 @@ footer {
 .user_info{
     margin-left: 20px;
 }
+
+.flash_message {
+    text-align: center;
+    color: #9C1A1C;
+}
