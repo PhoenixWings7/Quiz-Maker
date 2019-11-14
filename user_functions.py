@@ -13,7 +13,11 @@ def user_logged_in():
         return
 
 
-def hash_password_with_salt(password, salt = bcrypt.gensalt()):
+def generate_salt():
+    return bcrypt.gensalt()
+
+
+def hash_password_with_salt(password, salt = generate_salt()):
     '''
     Hashes password using random salt
     :param password:
@@ -23,16 +27,15 @@ def hash_password_with_salt(password, salt = bcrypt.gensalt()):
     return salt, hashed_password
 
 
-def log_in(input_password, user_password):
+def log_in(input_password, user_password, salt):
     '''
     Logs the user in.
     :param input_password:
     :return: True if password correct, False if incorrect
     '''
+    input_password = bytes(input_password, 'utf-8')
 
-    hashed_password = hash_password_with_salt(input_password)[1]
-
-    if bcrypt.checkpw(hashed_password, user_password):
+    if bcrypt.checkpw(input_password, user_password):
         return True
     else:
         return False

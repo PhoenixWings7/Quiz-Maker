@@ -141,6 +141,15 @@ def get_user_hashed_password(cursor, username):
 
 
 @connection_handler
+def get_password_salt(cursor, username):
+    statement_str = '''SELECT salt FROM users WHERE username = %(username)s'''
+    cursor.execute(statement_str, {'username': username})
+
+    salt = cursor.fetchone()['salt']
+    return salt
+
+
+@connection_handler
 def user_sign_up(cursor, user_data):
     salt, user_data['password'] = hash_password_with_salt(user_data['password'])
 

@@ -30,8 +30,13 @@ def main_page():
     if request.method == "POST":
         username = request.form['username']
         entered_password = request.form['password']
-        user_password = data_handler.get_user_hashed_password(username)
-        user_functions.log_in(entered_password, user_password)
+
+        db_password = data_handler.get_user_hashed_password(username)
+        '''retrieved password is memoryview so it has to be converted to bytes before hashing it in log_in function'''
+        user_password = db_password.tobytes()
+        salt = data_handler.get_password_salt(username)
+
+        user_functions.log_in(entered_password, user_password, salt)
 
     return render_template(TEMPLATES_ROUTES["main_page"], username = username)
 
