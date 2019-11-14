@@ -1,0 +1,5 @@
+gunicorn==19.0.0
+flask==1.1.1
+jinja2==2.10.3
+psycopg==2.8.4
+
