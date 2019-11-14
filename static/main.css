@@ -17,6 +17,9 @@ header{
     display: block;
     text-align: center;
 }
+#user_log {
+    margin-top: 35px;
+}
 
 body {
     background-color: lavenderblush;
@@ -141,4 +144,52 @@ footer {
 .flash_message {
     text-align: center;
     color: #9C1A1C;
+}
+
+/*Quizes lists*/
+#quizes_list_table{
+    width:100%;
+    height:100%;
+    background-color: #bcff9b;
+}
+
+#quiz_list{
+    margin: 0 auto;
+}
+
+#quiz_list{
+    align-content: center;
+    width: 700px;
+}
+
+#quiz_list table {
+    background-color: #a6f8f7;
+    border: 5px solid;
+    border-style: dashed;
+    border-color: #40d6de;
+    border-collapse: collapse;
+    text-align: center;
+
+}
+#quiz_list th {
+    color: #00b8de;
+    background-color: white;
+    padding: 10px;
+    border: 5px solid;
+    border-style: dashed;
+    border-color: #40d6de;
+    border-collapse: collapse;
+    text-align: center;
+}
+#quiz_list td {
+    padding: 10px;
+    border-collapse: collapse;
+    border: 5px solid;
+    border-style: dashed;
+    border-color: #40d6de;
+    border-collapse: collapse;
+    text-align: center;
+}
+#quiz_list td:hover {
+    background-color: #c8ffae;
 }

@@ -1,4 +1,16 @@
 {% extends 'base.html' %}
+{% block user %}
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+        {% for message in messages %}
+          <label class="flash_message">{{ message }}</label>
+        {% endfor %}
+      {% endif %}
+      {% if username %}
+        <label class="flash_message">User: <label style="color: crimson">{{ username }}</label>
+      {% endif %}
+    {% endwith %}
+{% endblock %}
 
 {% block title %}Welcome to the Quiz Maker!{% endblock %}
 
@@ -20,17 +32,6 @@
         </div>
     </div>
 
-    {% with messages = get_flashed_messages() %}
-      {% if messages %}
-        <ul class=flashes>
-        {% for message in messages %}
-            <br>
-          <h3 class="flash_message">{{ message }}</h3>
-        {% endfor %}
-        </ul>
-      {% endif %}
-    {% endwith %}
-
     {% if not username %}
         <button class="open-button" onclick="openForm()">Sign in or Sign up</button>
 
@@ -47,9 +48,6 @@
             <button type="button" class="btn cancel" onclick="closeForm()">Close</button>
           </form>
         </div>
-    {% else %}
-        <br>
-        <h3 class="flash_message">User: {{ username }}</h3>
     {% endif %}
 
     <script>
@@ -61,6 +59,4 @@
       document.getElementById("myForm").style.display = "none";
     }
     </script>
-
-
 {% endblock %}
