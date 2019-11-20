@@ -15,8 +15,6 @@ def create_answer_names():
     answer_names = ["correct_answer"] + answer_ids
     return answer_names
 
-ANSWER_NAMES = create_answer_names()
-
 
 def create_data_headers():
     '''
@@ -28,11 +26,18 @@ def create_data_headers():
     return data_headers
 
 
+
+ANSWER_NAMES = create_answer_names()
 DATA_HEADERS = create_data_headers()
 
 
 
 def validate_title(title):
+    '''
+    Checks if title is just letters and spaces
+    :param title:
+    :return: True or False
+    '''
     if title.replace(" ", "").isalpha():
         return True
     else:
