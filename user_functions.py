@@ -6,6 +6,7 @@ import bcrypt
 def user_logged_in():
     '''
     Check if any user is logged in and return his/her username. If not logged in, return None.
+    :return string or None
     '''
     if 'username' in session:
         return session['username']
