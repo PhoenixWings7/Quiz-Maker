@@ -30,7 +30,7 @@ def validate_title(title):
 
 
 def create_connection_string():
-    db_url = os.environ.get("DATABASE_URLI")
+    db_url = os.environ.get("DATABASE_URL")
 
     env_var_defined = db_url
 
