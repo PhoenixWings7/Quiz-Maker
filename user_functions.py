@@ -27,7 +27,11 @@ def hash_password_with_salt(password, salt = generate_salt()):
     return salt, hashed_password
 
 
-def log_in(input_password, user_password, salt):
+def set_session_var(var, value):
+    session[var] = value
+
+
+def log_in(username, input_password, user_password, salt):
     '''
     Logs the user in.
     :param input_password:
@@ -35,6 +39,8 @@ def log_in(input_password, user_password, salt):
     '''
     input_password = bytes(input_password, 'utf-8')
     login_successful = bcrypt.checkpw(input_password, user_password)
+    if login_successful:
+        set_session_var('username', username)
 
     return login_successful
 
