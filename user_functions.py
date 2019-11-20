@@ -34,11 +34,9 @@ def log_in(input_password, user_password, salt):
     :return: True if password correct, False if incorrect
     '''
     input_password = bytes(input_password, 'utf-8')
+    login_successful = bcrypt.checkpw(input_password, user_password)
 
-    if bcrypt.checkpw(input_password, user_password):
-        return True
-    else:
-        return False
+    return login_successful
 
 
 def log_out():

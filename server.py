@@ -29,6 +29,7 @@ def main_page():
 
     if request.method == "GET":
         username = user_functions.user_logged_in()
+
     if request.method == "POST":
         username = request.form['username']
         entered_password = request.form['password']
