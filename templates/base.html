@@ -30,6 +30,9 @@
                           {% endif %}
                           {% if username %}
                             <label class="flash_message">User: <label style="color: crimson">{{ username }}</label>
+                            <form class="form-container" action="/log-out" method="get">
+                                <button type="submit" class="btn cancel">Log out</button>
+                            </form>
                           {% endif %}
                         {% endwith %}
                     </div>

@@ -67,6 +67,12 @@ def sign_up():
     return render_template(TEMPLATES_ROUTES["sign_up"], story_to_edit = story_to_edit)
 
 
+@app.route('/log-out', methods=["GET"])
+def log_out():
+    user_functions.log_out()
+    return redirect(url_for("main_page"))
+
+
 @app.route('/new-quiz', methods = ["GET", "POST"])
 def new_quiz_route():
     if request.method == "GET":
