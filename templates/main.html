@@ -1,16 +1,4 @@
 {% extends 'base.html' %}
-{% block user %}
-    {% with messages = get_flashed_messages() %}
-      {% if messages %}
-        {% for message in messages %}
-          <label class="flash_message">{{ message }}</label>
-        {% endfor %}
-      {% endif %}
-      {% if username %}
-        <label class="flash_message">User: <label style="color: crimson">{{ username }}</label>
-      {% endif %}
-    {% endwith %}
-{% endblock %}
 
 {% block title %}Welcome to the Quiz Maker!{% endblock %}
 

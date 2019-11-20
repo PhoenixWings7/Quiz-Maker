@@ -20,8 +20,18 @@
                     <div class="col-sm-8">
                         <h1>Join or make your own Quiz!</h1>
                     </div>
+
                     <div class="col-sm-2" id="user_log">
-                        {% block user %}{% endblock %}
+                        {% with messages = get_flashed_messages() %}
+                          {% if messages %}
+                            {% for message in messages %}
+                              <label class="flash_message">{{ message }}</label>
+                            {% endfor %}
+                          {% endif %}
+                          {% if username %}
+                            <label class="flash_message">User: <label style="color: crimson">{{ username }}</label>
+                          {% endif %}
+                        {% endwith %}
                     </div>
                 </div>
         </div>
