@@ -1,16 +1,4 @@
 {% extends 'base.html' %}
-{% block user %}
-    {% with messages = get_flashed_messages() %}
-      {% if messages %}
-        {% for message in messages %}
-          <label class="flash_message">{{ message }}</label>
-        {% endfor %}
-      {% endif %}
-      {% if username %}
-        <label class="flash_message">User: <label style="color: crimson">{{ username }}</label>
-      {% endif %}
-    {% endwith %}
-{% endblock %}
 
 {% block title %}Welcome to the Quiz Maker!{% endblock %}
 
@@ -37,14 +25,15 @@
 
         <div class="form-popup" id="myForm">
           <form action="/" class="form-container" method="post">
-              <label><h4>Login</h4></label><label><a href="/sign_up"><h3 id="sign_up">Sign up</h3></a></label>
+              <label><h4>Log in</h4></label>
+              <label><a href="/sign_up"><h3 id="sign_up">Sign up</h3></a></label>
 
             <input type="text" placeholder="Enter login" id="username" name="username" required>
 
             <label for="password"><h4>Password</h4></label>
             <input type="password" placeholder="Enter Password" id="password" name="password" required>
 
-            <button type="submit" class="btn">Login</button>
+            <button type="submit" class="btn">Log in</button>
             <button type="button" class="btn cancel" onclick="closeForm()">Close</button>
           </form>
         </div>

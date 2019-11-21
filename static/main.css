@@ -10,7 +10,7 @@ header{
     margin-bottom: -30px;
 }
 #header{
-    background: darkgray;
+    background: #eaeaea;
 }
 
 #link{
@@ -115,9 +115,13 @@ footer {
   left: 0;
   bottom: 0;
   width: 100%;
-  background-color: darkgray;
-  color: white;
+  background-color: #eaeaea;
+  color: darkcyan;
   text-align: center;
+}
+
+.push {
+    height: 50px;
 }
 
 /*Style for sign up page*/
@@ -147,17 +151,14 @@ footer {
 }
 
 /*Quizes lists*/
-#quizes_list_table{
-    width:100%;
-    height:100%;
-    background-color: #bcff9b;
-}
+/*#quizes_list_table{*/
+/*    width:100%;*/
+/*    height:100%;*/
+/*    background-color: #bcff9b;*/
+/*}*/
 
 #quiz_list{
     margin: 0 auto;
-}
-
-#quiz_list{
     align-content: center;
     width: 700px;
 }

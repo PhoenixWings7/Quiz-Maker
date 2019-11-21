@@ -6,6 +6,7 @@ import bcrypt
 def user_logged_in():
     '''
     Check if any user is logged in and return his/her username. If not logged in, return None.
+    :return string or None
     '''
     if 'username' in session:
         return session['username']
@@ -27,18 +28,22 @@ def hash_password_with_salt(password, salt = generate_salt()):
     return salt, hashed_password
 
 
-def log_in(input_password, user_password, salt):
+def set_session_var(var, value):
+    session[var] = value
+
+
+def log_in(username, input_password, user_password, salt):
     '''
     Logs the user in.
     :param input_password:
     :return: True if password correct, False if incorrect
     '''
     input_password = bytes(input_password, 'utf-8')
+    login_successful = bcrypt.checkpw(input_password, user_password)
+    if login_successful:
+        set_session_var('username', username)
 
-    if bcrypt.checkpw(input_password, user_password):
-        return True
-    else:
-        return False
+    return login_successful
 
 
 def log_out():

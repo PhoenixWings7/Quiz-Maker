@@ -19,7 +19,8 @@ VALIDATION_MESSAGES = {"invalid title" : '''Your title includes some special sig
                                             letters and spaces. Try again!''',
                        "title not unique" : '''There's already a quiz with that title! Try again.''',
                        "user not in database" : '''You entered a wrong name or you aren't a Quiz Maker user. 
-                                                    Try again or sign up!'''}
+                                                    Try again or sign up!''',
+                       "no user logged in" : '''You're not logged in. Log in and try again.'''}
 
 
 
@@ -29,17 +30,18 @@ def main_page():
 
     if request.method == "GET":
         username = user_functions.user_logged_in()
+
     if request.method == "POST":
         username = request.form['username']
         entered_password = request.form['password']
 
         db_password = data_handler.get_user_hashed_password(username)
         if db_password:
-            '''retrieved password is memoryview so it has to be converted to bytes before hashing it in log_in function'''
+            # retrieved password is memoryview so it has to be converted to bytes before hashing it in log_in function
             user_password = db_password.tobytes()
             salt = data_handler.get_password_salt(username)
 
-            is_logged_in = user_functions.log_in(entered_password, user_password, salt)
+            is_logged_in = user_functions.log_in(username, entered_password, user_password, salt)
         else:
             flash(VALIDATION_MESSAGES["user not in database"])
             return redirect(url_for("main_page"))
@@ -65,11 +67,21 @@ def sign_up():
     return render_template(TEMPLATES_ROUTES["sign_up"], story_to_edit = story_to_edit)
 
 
+@app.route('/log-out', methods=["GET"])
+def log_out():
+    user_functions.log_out()
+    return redirect(url_for("main_page"))
+
+
 @app.route('/new-quiz', methods = ["GET", "POST"])
 def new_quiz_route():
     if request.method == "GET":
+        username = user_functions.user_logged_in()
+        if not username:
+            flash(VALIDATION_MESSAGES["no user logged in"])
+            return redirect(url_for("main_page"))
         answer_ids = ["answer_" + str(ord_num) for ord_num in range(2, data_handler.NUM_OF_QUESTIONS + 1)]
-        return render_template(TEMPLATES_ROUTES["new quiz start"], answer_ids = answer_ids)
+        return render_template(TEMPLATES_ROUTES["new quiz start"], answer_ids = answer_ids, username = username)
 
     if request.method == "POST":
         quiz_title = request.form["quiz_title"]
@@ -114,8 +126,9 @@ def next_question_form(quiz_id):
 @app.route('/quiz-list', methods = ["GET"])
 def quiz_list():
     if request.method == "GET":
+        username = user_functions.user_logged_in()
         quiz_list = data_handler.get_quiz_titles_list_form_db()
-        return render_template(TEMPLATES_ROUTES["quiz list"], quiz_list = quiz_list)
+        return render_template(TEMPLATES_ROUTES["quiz list"], username = username, quiz_list = quiz_list)
 
 
 if __name__ == '__main__':
