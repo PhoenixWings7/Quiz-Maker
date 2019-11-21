@@ -19,7 +19,8 @@ VALIDATION_MESSAGES = {"invalid title" : '''Your title includes some special sig
                        "title not unique" : '''There's already a quiz with that title! Try again.''',
                        "user not in database" : '''You entered a wrong name or you aren't a Quiz Maker user. 
                                                     Try again or sign up!''',
-                       "no user logged in" : '''You're not logged in. Log in and try again.'''}
+                       "no user logged in" : '''You're not logged in. Log in and try again.''',
+                       "user already in database" : '''Your login or email wasn't unique. Try again or log in.'''}
 
 
 
@@ -61,7 +62,10 @@ def sign_up():
 
     if request.method == "POST":
         user_data = dict(request.form)
-        data_handler.user_sign_up(user_data)
+        sign_up_successful = data_handler.user_sign_up(user_data)
+        if not sign_up_successful:
+            flash(VALIDATION_MESSAGES["user already in database"])
+            return redirect(url_for("main_page"))
 
     return render_template(TEMPLATES_ROUTES["sign_up"], story_to_edit = story_to_edit)
 

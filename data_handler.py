@@ -141,11 +141,13 @@ def get_password_salt(cursor, username):
 def user_sign_up(cursor, user_data):
     salt, user_data['password'] = hash_password_with_salt(user_data['password'])
 
-    statement_str = '''INSERT INTO users VALUES (DEFAULT, %(username)s, %(nickname)s, %(password)s,
-     %(salt)s, %(email)s, %(user_age)s, %(user_gender)s, %(photo_link)s, %(biography)s)'''
+    try:
+        statement_str = '''INSERT INTO users VALUES (DEFAULT, %(username)s, %(nickname)s, %(password)s,
+         %(salt)s, %(email)s, %(user_age)s, %(user_gender)s, %(photo_link)s, %(biography)s)'''
 
-    cursor.execute(statement_str, {'username' : user_data['username'], 'nickname' : user_data['nickname'],
-                                   'password' : user_data['password'], 'salt' : salt, 'email' : user_data['email'],
-                                   'user_age' : user_data['user_age'], 'user_gender' : user_data['user_gender'],
-                                   'photo_link' : user_data['photo_link'], 'biography' : user_data['biography']})
-    return
+        cursor.execute(statement_str, {'username' : user_data['username'], 'nickname' : user_data['nickname'],
+                                       'password' : user_data['password'], 'salt' : salt, 'email' : user_data['email'],
+                                       'user_age' : user_data['user_age'], 'user_gender' : user_data['user_gender'],
+                                       'photo_link' : user_data['photo_link'], 'biography' : user_data['biography']})
+    except psycopg2.errors.UniqueViolation:
+        return False
