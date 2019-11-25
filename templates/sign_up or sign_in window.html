@@ -1,16 +1,26 @@
 <button class="open-button" onclick="openForm()">Sign in or Sign up</button>
 
 <div class="form-popup" id="myForm">
-  <form action="{{ url_for("log_in") }}" class="form-container" method="post">
-      <label><h4>Log in</h4></label>
-      <label><a href="/sign_up"><h3 id="sign_up">Sign up</h3></a></label>
+    <script>
+        function openForm() {
+          document.getElementById("myForm").style.display = "block";
+        }
 
-    <input type="text" placeholder="Enter login" id="username" name="username" required>
+        function closeForm() {
+          document.getElementById("myForm").style.display = "none";
+        }
+    </script>
 
-    <label for="password"><h4>Password</h4></label>
-    <input type="password" placeholder="Enter Password" id="password" name="password" required>
+    <form action="{{ url_for("log_in") }}" class="form-container" method="post">
+        <label><h4>Log in</h4></label>
+        <label><a href="/sign_up"><h3 id="sign_up">Sign up</h3></a></label>
 
-    <button type="submit" class="btn">Log in</button>
-    <button type="button" class="btn cancel" onclick="closeForm()">Close</button>
-  </form>
+        <input type="text" placeholder="Enter login" id="username" name="username" required>
+
+        <label for="password"><h4>Password</h4></label>
+        <input type="password" placeholder="Enter Password" id="password" name="password" required>
+
+        <button type="submit" class="btn">Log in</button>
+        <button type="button" class="btn cancel" onclick="closeForm()">Close</button>
+    </form>
 </div>
