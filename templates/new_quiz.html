@@ -2,6 +2,10 @@
 
 {% block title %}Add the new quiz{% endblock %}
 
+{% block original_url %}
+    <input type="hidden" id="original url" name="original url" value="new_quiz_route">
+{% endblock %}
+
 {% block content %}
     {% with messages = get_flashed_messages() %}
       {% if messages %}
