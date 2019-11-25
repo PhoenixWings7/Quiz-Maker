@@ -25,30 +25,11 @@ VALIDATION_MESSAGES = {"invalid title" : '''Your title includes some special sig
 
 
 
-@app.route('/', methods=["GET", "POST"])
+@app.route('/', methods=["GET"])
 def main_page():
 
     if request.method == "GET":
         username = user_functions.user_logged_in()
-
-    if request.method == "POST":
-        username = request.form['username']
-        entered_password = request.form['password']
-
-        db_password = data_handler.get_user_hashed_password(username)
-        if db_password:
-            # retrieved password is memoryview so it has to be converted to bytes before hashing it in log_in function
-            user_password = db_password.tobytes()
-            salt = data_handler.get_password_salt(username)
-
-            is_logged_in = user_functions.log_in(username, entered_password, user_password, salt)
-        else:
-            flash(VALIDATION_MESSAGES["user not in database"])
-            return redirect(url_for("main_page"))
-
-        if not is_logged_in:
-            flash(VALIDATION_MESSAGES["user not in database"])
-            return redirect(url_for("main_page"))
 
     return render_template(TEMPLATES_ROUTES["main_page"], username = username)
 
@@ -70,10 +51,34 @@ def sign_up():
     return render_template(TEMPLATES_ROUTES["sign_up"], story_to_edit = story_to_edit)
 
 
+@app.route('/log-in', methods=["POST"])
+def log_in():
+
+    username = request.form['username']
+    entered_password = request.form['password']
+
+
+    db_password = data_handler.get_user_hashed_password(username)
+    if db_password:
+        # retrieved password is memoryview so it has to be converted to bytes before hashing it in log_in function
+        user_password = db_password.tobytes()
+        salt = data_handler.get_password_salt(username)
+
+        is_logged_in = user_functions.log_in(username, entered_password, user_password, salt)
+    else:
+        flash(VALIDATION_MESSAGES["user not in database"])
+
+    if not is_logged_in:
+        flash(VALIDATION_MESSAGES["user not in database"])
+    return redirect(url_for("main_page"))
+
+
 @app.route('/log-out', methods=["GET"])
 def log_out():
     user_functions.log_out()
-    return redirect(url_for("main_page"))
+    #if request method is "GET", you can find your form data only in request.args.get not in request.form
+    original_url = request.args.get('original url')
+    return redirect(url_for(original_url))
 
 
 @app.route('/new-quiz', methods = ["GET", "POST"])
