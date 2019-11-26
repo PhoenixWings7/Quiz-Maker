@@ -14,16 +14,6 @@ h1 {
     color: #007f9c;
 }
 
-table {
-    background-color: #a6f8f7;
-    border: 5px solid;
-    border-style: dashed;
-    border-color: #40d6de;
-    border-collapse: collapse;
-    text-align: center;
-    width: 65%;
-
-}
 table th {
     color: #00b8de;
     background-color: white;
@@ -45,4 +35,20 @@ table td {
 }
 table td:hover {
     background-color: #c8ffae;
+}
+
+#quiz_list{
+    margin: 0 auto;
+    align-content: center;
+    width: 80%;
+}
+
+table {
+    background-color: #a6f8f7;
+    border: 5px solid;
+    border-style: dashed;
+    border-color: #40d6de;
+    border-collapse: collapse;
+    text-align: center;
+
 }

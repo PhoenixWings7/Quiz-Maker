@@ -2,11 +2,15 @@
 
 {% block title %}Add the new quiz{% endblock %}
 
+{% block header %}Make your own Quiz!{% endblock %}
+
 {% block original_url %}
     <input type="hidden" id="original url" name="original url" value="new_quiz_route">
 {% endblock %}
 
 {% block content %}
+    <link rel="stylesheet" href="../static/new_quiz.css">
+
     {% with messages = get_flashed_messages() %}
       {% if messages %}
         <ul class=flashes>
@@ -23,7 +27,7 @@
                     <div class="form-group">
                         <form action = "/new-quiz" method = "post">
                             <input class="form-control-file form-control-lg" type="text" placeholder="Quiz title" id = "quiz_title" name = "quiz_title" required>
-                            <input class="btn btn-primary btn-lg active" role="button" aria-pressed="true" type = "submit" value = "Create your quiz">
+                            <input class="btn btn-primary btn-lg active top-space" role="button" aria-pressed="true" type = "submit" value = "Create your quiz">
                         </form>
                     </div>
                 </div>

@@ -1,0 +1,20 @@
+.form-group textarea {
+    width: 400px;
+}
+
+.form-group input {
+    width: 350px ;
+}
+
+#user_age {
+    width: 70px;
+}
+
+.form-group label {
+    font-size: 20px;
+}
+
+.user_info{
+    width: 90%;
+    margin: auto;
+}

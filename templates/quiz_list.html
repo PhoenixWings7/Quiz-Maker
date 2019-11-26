@@ -2,11 +2,14 @@
 
 {% block title %}Quizzes list{% endblock %}
 
+{% block header %}Join a Quiz!{% endblock %}
+
 {% block original_url %}
     <input type="hidden" id="original url" name="original url" value="quiz_list">
 {% endblock %}
 
 {% block content %}
+    <link rel="stylesheet" href="../static/quiz_list.css">
 
     <div id="quiz_list">
             <table class = "body_content" id = "quiz_list">
