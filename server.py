@@ -3,7 +3,6 @@ from flask import Flask, render_template, request, redirect, url_for, flash
 import data_handler
 import user_functions
 
-FLASK_APP = "server.py"
 app = Flask(__name__)
 # Set the secret key to some random bytes. Keep this really secret! The app doesn't work without it.
 app.secret_key = os.urandom(24)
@@ -26,30 +25,11 @@ VALIDATION_MESSAGES = {"invalid title" : '''Your title includes some special sig
 
 
 
-@app.route('/', methods=["GET", "POST"])
+@app.route('/', methods=["GET"])
 def main_page():
 
     if request.method == "GET":
         username = user_functions.user_logged_in()
-
-    if request.method == "POST":
-        username = request.form['username']
-        entered_password = request.form['password']
-
-        db_password = data_handler.get_user_hashed_password(username)
-        if db_password:
-            # retrieved password is memoryview so it has to be converted to bytes before hashing it in log_in function
-            user_password = db_password.tobytes()
-            salt = data_handler.get_password_salt(username)
-
-            is_logged_in = user_functions.log_in(username, entered_password, user_password, salt)
-        else:
-            flash(VALIDATION_MESSAGES["user not in database"])
-            return redirect(url_for("main_page"))
-
-        if not is_logged_in:
-            flash(VALIDATION_MESSAGES["user not in database"])
-            return redirect(url_for("main_page"))
 
     return render_template(TEMPLATES_ROUTES["main_page"], username = username)
 
@@ -71,10 +51,34 @@ def sign_up():
     return render_template(TEMPLATES_ROUTES["sign_up"], story_to_edit = story_to_edit)
 
 
+@app.route('/log-in', methods=["POST"])
+def log_in():
+
+    username = request.form['username']
+    entered_password = request.form['password']
+
+
+    db_password = data_handler.get_user_hashed_password(username)
+    if db_password:
+        # retrieved password is memoryview so it has to be converted to bytes before hashing it in log_in function
+        user_password = db_password.tobytes()
+        salt = data_handler.get_password_salt(username)
+
+        is_logged_in = user_functions.log_in(username, entered_password, user_password, salt)
+    else:
+        flash(VALIDATION_MESSAGES["user not in database"])
+
+    if not is_logged_in:
+        flash(VALIDATION_MESSAGES["user not in database"])
+    return redirect(url_for("main_page"))
+
+
 @app.route('/log-out', methods=["GET"])
 def log_out():
     user_functions.log_out()
-    return redirect(url_for("main_page"))
+    #if request method is "GET", you can find your form data only in request.args.get not in request.form
+    original_url = request.args.get('original url')
+    return redirect(url_for(original_url))
 
 
 @app.route('/new-quiz', methods = ["GET", "POST"])
@@ -90,30 +94,38 @@ def new_quiz_route():
     if request.method == "POST":
         quiz_title = request.form["quiz_title"]
 
+        username = user_functions.user_logged_in()
+        if not username:
+            flash(VALIDATION_MESSAGES["no user logged in"])
+            return redirect(url_for("main_page"))
+
+
         if not data_handler.validate_title(quiz_title):
             flash(VALIDATION_MESSAGES["invalid title"])
             return redirect(url_for("new_quiz_route"))
-        title_uniqueness_validation = data_handler.add_quiz_title_to_database(quiz_title)
+
+        user_id = data_handler.get_user_id(username)
+        title_uniqueness_validation = data_handler.add_quiz_title_to_database(quiz_title, user_id)
 
         if not title_uniqueness_validation:
             flash(VALIDATION_MESSAGES["title not unique"])
             return redirect(url_for("new_quiz_route"))
 
-        id_ = data_handler.get_quiz_id(quiz_title)
+        quiz_id = data_handler.get_quiz_id(quiz_title)
 
-        return redirect(url_for("next_question_form", quiz_title = quiz_title, quiz_id = id_))
+        return redirect(url_for("next_question_form", quiz_title = quiz_title, quiz_id = quiz_id))
 
 
 @app.route('/new-quiz-next/<quiz_id>', methods = ["GET", "POST"])
 def next_question_form(quiz_id):
     if request.method == "GET":
-        answer_ids = ["answer_" + str(ord_num) for ord_num in range(2, data_handler.NUM_OF_QUESTIONS + 1)]
+        answer_ids = data_handler.create_answer_names()
         return render_template(TEMPLATES_ROUTES["next question form"],
                                answer_ids = answer_ids,
                                quiz_id = quiz_id)
 
     if request.method == "POST":
-        quiz_title = request.form["quiz_title"]
+
         question = request.form["question"]
 
         data_handler.add_question_to_database(question, quiz_id)
@@ -122,7 +134,7 @@ def next_question_form(quiz_id):
         question_data.pop("quiz_title")
         data_handler.add_answers_to_db(question_data, quiz_id)
 
-        answer_ids = ["answer_" + str(ord_num) for ord_num in range(2, data_handler.NUM_OF_QUESTIONS + 1)]
+        answer_ids = data_handler.create_answer_names()
         return render_template(TEMPLATES_ROUTES["next question form"],
                                answer_ids = answer_ids, quiz_id = quiz_id)
 

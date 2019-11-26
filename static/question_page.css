@@ -14,3 +14,7 @@ h2 {
 .optional_answers {
     color: grey;
 }
+
+.top-space {
+    margin-top: 40px;
+}
