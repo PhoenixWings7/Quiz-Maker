@@ -94,30 +94,38 @@ def new_quiz_route():
     if request.method == "POST":
         quiz_title = request.form["quiz_title"]
 
+        username = user_functions.user_logged_in()
+        if not username:
+            flash(VALIDATION_MESSAGES["no user logged in"])
+            return redirect(url_for("main_page"))
+
+
         if not data_handler.validate_title(quiz_title):
             flash(VALIDATION_MESSAGES["invalid title"])
             return redirect(url_for("new_quiz_route"))
-        title_uniqueness_validation = data_handler.add_quiz_title_to_database(quiz_title)
+
+        user_id = data_handler.get_user_id(username)
+        title_uniqueness_validation = data_handler.add_quiz_title_to_database(quiz_title, user_id)
 
         if not title_uniqueness_validation:
             flash(VALIDATION_MESSAGES["title not unique"])
             return redirect(url_for("new_quiz_route"))
 
-        id_ = data_handler.get_quiz_id(quiz_title)
+        quiz_id = data_handler.get_quiz_id(quiz_title)
 
-        return redirect(url_for("next_question_form", quiz_title = quiz_title, quiz_id = id_))
+        return redirect(url_for("next_question_form", quiz_title = quiz_title, quiz_id = quiz_id))
 
 
 @app.route('/new-quiz-next/<quiz_id>', methods = ["GET", "POST"])
 def next_question_form(quiz_id):
     if request.method == "GET":
-        answer_ids = ["answer_" + str(ord_num) for ord_num in range(2, data_handler.NUM_OF_QUESTIONS + 1)]
+        answer_ids = data_handler.create_answer_names()
         return render_template(TEMPLATES_ROUTES["next question form"],
                                answer_ids = answer_ids,
                                quiz_id = quiz_id)
 
     if request.method == "POST":
-        quiz_title = request.form["quiz_title"]
+
         question = request.form["question"]
 
         data_handler.add_question_to_database(question, quiz_id)
@@ -126,7 +134,7 @@ def next_question_form(quiz_id):
         question_data.pop("quiz_title")
         data_handler.add_answers_to_db(question_data, quiz_id)
 
-        answer_ids = ["answer_" + str(ord_num) for ord_num in range(2, data_handler.NUM_OF_QUESTIONS + 1)]
+        answer_ids = data_handler.create_answer_names()
         return render_template(TEMPLATES_ROUTES["next question form"],
                                answer_ids = answer_ids, quiz_id = quiz_id)
 
