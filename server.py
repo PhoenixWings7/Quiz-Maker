@@ -34,7 +34,6 @@ def main_page():
     return render_template(TEMPLATES_ROUTES["main_page"], username = username)
 
 
-
 @app.route('/sign_up', methods=["GET", "POST"])
 def sign_up():
     story_to_edit = {}
@@ -57,14 +56,12 @@ def log_in():
     username = request.form['username']
     entered_password = request.form['password']
 
-
     db_password = data_handler.get_user_hashed_password(username)
     if db_password:
         # retrieved password is memoryview so it has to be converted to bytes before hashing it in log_in function
         user_password = db_password.tobytes()
-        salt = data_handler.get_password_salt(username)
 
-        is_logged_in = user_functions.log_in(username, entered_password, user_password, salt)
+        is_logged_in = user_functions.log_in(username, entered_password, user_password)
     else:
         flash(VALIDATION_MESSAGES["user not in database"])
 
@@ -88,7 +85,7 @@ def new_quiz_route():
         if not username:
             flash(VALIDATION_MESSAGES["no user logged in"])
             return redirect(url_for("main_page"))
-        answer_ids = ["answer_" + str(ord_num) for ord_num in range(2, data_handler.NUM_OF_QUESTIONS + 1)]
+        answer_ids = data_handler.create_answer_names()
         return render_template(TEMPLATES_ROUTES["new quiz start"], answer_ids = answer_ids, username = username)
 
     if request.method == "POST":
@@ -99,12 +96,14 @@ def new_quiz_route():
             flash(VALIDATION_MESSAGES["no user logged in"])
             return redirect(url_for("main_page"))
 
-
         if not data_handler.validate_title(quiz_title):
             flash(VALIDATION_MESSAGES["invalid title"])
             return redirect(url_for("new_quiz_route"))
 
         user_id = data_handler.get_user_id(username)
+        if not user_id:
+            flash(VALIDATION_MESSAGES["user not in database"])
+            return redirect(url_for("main_page"))
         title_uniqueness_validation = data_handler.add_quiz_title_to_database(quiz_title, user_id)
 
         if not title_uniqueness_validation:
@@ -143,7 +142,7 @@ def next_question_form(quiz_id):
 def quiz_list():
     if request.method == "GET":
         username = user_functions.user_logged_in()
-        quiz_list = data_handler.get_quiz_titles_list_form_db()
+        quiz_list = data_handler.get_quiz_titles_list_from_db()
         return render_template(TEMPLATES_ROUTES["quiz list"], username = username, quiz_list = quiz_list)
 
 
