@@ -1,0 +1,29 @@
+<button class="open-button" onclick="openForm()">Sign in or Sign up</button>
+
+<div class="form-popup" id="myForm">
+    <script>
+        function openForm() {
+          document.getElementById("myForm").style.display = "block";
+        }
+
+        function closeForm() {
+          document.getElementById("myForm").style.display = "none";
+        }
+    </script>
+
+    <form action="{{ url_for("log_in") }}" class="form-container" method="post">
+        <div id="sign_up">
+            <label><a href="/sign_up"><h3>Sign up</h3></a></label>
+        </div>
+        <br>
+        <label><h4>Login</h4></label>
+
+        <input type="text" placeholder="Enter login" id="username" name="username" required>
+
+        <label for="password"><h4>Password</h4></label>
+        <input type="password" placeholder="Enter Password" id="password" name="password" required>
+
+        <button type="submit" class="btn">Log in</button>
+        <button type="button" class="btn cancel" onclick="closeForm()">Close</button>
+    </form>
+</div>

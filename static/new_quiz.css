@@ -14,3 +14,7 @@ h1 {
 h2 {
     color: deeppink;
 }
+
+.top-space {
+    margin-top: 40px;
+}

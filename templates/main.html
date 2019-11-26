@@ -2,8 +2,15 @@
 
 {% block title %}Welcome to the Quiz Maker!{% endblock %}
 
+{% block header %}Join or make your own Quiz!{% endblock %}
+
+{% block original_url %}
+    <input type="hidden" id="original url" name="original url" value="main_page">
+{% endblock %}
+
 {% block content %}
-    <div class="container" style="margin-top: 150px">
+    <link rel="stylesheet" href="{{url_for('static', filename='main.css')}}">
+    <div class="container">
         <div class="row">
             <div class="col-sm-6">
                 <a href="/new-quiz" id="link">
@@ -21,31 +28,7 @@
     </div>
 
     {% if not username %}
-        <button class="open-button" onclick="openForm()">Sign in or Sign up</button>
-
-        <div class="form-popup" id="myForm">
-          <form action="/" class="form-container" method="post">
-              <label><h4>Log in</h4></label>
-              <label><a href="/sign_up"><h3 id="sign_up">Sign up</h3></a></label>
-
-            <input type="text" placeholder="Enter login" id="username" name="username" required>
-
-            <label for="password"><h4>Password</h4></label>
-            <input type="password" placeholder="Enter Password" id="password" name="password" required>
-
-            <button type="submit" class="btn">Log in</button>
-            <button type="button" class="btn cancel" onclick="closeForm()">Close</button>
-          </form>
-        </div>
+        {% include "sign_up or sign_in window.html" with context %}
     {% endif %}
 
-    <script>
-    function openForm() {
-      document.getElementById("myForm").style.display = "block";
-    }
-
-    function closeForm() {
-      document.getElementById("myForm").style.display = "none";
-    }
-    </script>
 {% endblock %}

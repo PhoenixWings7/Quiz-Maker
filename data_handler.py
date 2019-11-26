@@ -65,10 +65,23 @@ def get_question_id(cursor, quiz_id):
 
 
 @db_connection.connection_handler
-def add_quiz_title_to_database(cursor, title):
+def get_user_id(cursor, username):
+    statement_str = '''SELECT user_id FROM users WHERE username = %(username)s'''
+    cursor.execute(statement_str, {"username" : username})
     try:
-        statement_str = "INSERT INTO quiz_titles VALUES (DEFAULT , %(title)s)"
-        cursor.execute(statement_str, {"title" : title})
+        user_id = cursor.fetchone()['user_id']
+    except TypeError:
+        return
+
+    return user_id
+
+
+
+@db_connection.connection_handler
+def add_quiz_title_to_database(cursor, title, user_id):
+    try:
+        statement_str = "INSERT INTO quiz_titles VALUES (DEFAULT , %(title)s, %(user_id)s)"
+        cursor.execute(statement_str, {"title" : title, "user_id" : user_id})
     except psycopg2.errors.UniqueViolation:
         return False
     return True
