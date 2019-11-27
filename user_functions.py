@@ -46,4 +46,5 @@ def log_in(username, input_password, user_password):
 
 
 def log_out():
-    session.pop('username')
+    #None after the comma prevents KeyError from happening if there's no username in session
+    session.pop('username', None)
