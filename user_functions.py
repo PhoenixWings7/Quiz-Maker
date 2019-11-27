@@ -1,4 +1,3 @@
-import os
 from flask import session
 import bcrypt
 
@@ -32,7 +31,7 @@ def set_session_var(var, value):
     session[var] = value
 
 
-def log_in(username, input_password, user_password, salt):
+def log_in(username, input_password, user_password):
     '''
     Logs the user in.
     :param input_password:
