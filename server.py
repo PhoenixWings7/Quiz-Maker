@@ -23,16 +23,11 @@ VALIDATION_MESSAGES = {"invalid title" : '''Your title includes some special sig
                        "user already in database" : '''Your login or email wasn't unique. Try again or log in.'''}
 
 
-
-
 @app.route('/', methods=["GET"])
 def main_page():
-
     if request.method == "GET":
         username = user_functions.user_logged_in()
-
     return render_template(TEMPLATES_ROUTES["main_page"], username = username)
-
 
 
 @app.route('/sign_up', methods=["GET", "POST"])
@@ -56,7 +51,6 @@ def log_in():
 
     username = request.form['username']
     entered_password = request.form['password']
-
 
     db_password = data_handler.get_user_hashed_password(username)
     if db_password:
@@ -99,7 +93,6 @@ def new_quiz_route():
             flash(VALIDATION_MESSAGES["no user logged in"])
             return redirect(url_for("main_page"))
 
-
         if not data_handler.validate_title(quiz_title):
             flash(VALIDATION_MESSAGES["invalid title"])
             return redirect(url_for("new_quiz_route"))
@@ -116,7 +109,7 @@ def new_quiz_route():
         return redirect(url_for("next_question_form", quiz_title = quiz_title, quiz_id = quiz_id))
 
 
-@app.route('/new-quiz-next/<quiz_id>', methods = ["GET", "POST"])
+@app.route('/new-quiz-next/<quiz_id>', methods=["GET", "POST"])
 def next_question_form(quiz_id):
     if request.method == "GET":
         answer_ids = data_handler.create_answer_names()
@@ -145,6 +138,12 @@ def quiz_list():
         username = user_functions.user_logged_in()
         quiz_list = data_handler.get_quiz_titles_list_form_db()
         return render_template(TEMPLATES_ROUTES["quiz list"], username = username, quiz_list = quiz_list)
+
+
+@app.route('/<username>/details')
+def settings(username):
+    user_info = data_handler.get_user_data(username)
+    return render_template('details.html', user_info=user_info, username=username)
 
 
 if __name__ == '__main__':

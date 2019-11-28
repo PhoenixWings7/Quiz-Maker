@@ -4,8 +4,8 @@ import psycopg2, psycopg2.extras, psycopg2.errors
 
 
 def create_connection_string():
-    db_url = os.environ.get("DATABASE_URL")
-
+    db_url = os.environ.get("DATABASE_URLI")
+    print(db_url)
     env_var_defined = db_url
 
     if env_var_defined:

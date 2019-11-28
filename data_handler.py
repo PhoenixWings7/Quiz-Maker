@@ -26,10 +26,8 @@ def create_data_headers():
     return data_headers
 
 
-
 ANSWER_NAMES = create_answer_names()
 DATA_HEADERS = create_data_headers()
-
 
 
 def validate_title(title):
@@ -42,8 +40,6 @@ def validate_title(title):
         return True
     else:
         return False
-
-
 
 
 @db_connection.connection_handler
@@ -74,7 +70,6 @@ def get_user_id(cursor, username):
         return
 
     return user_id
-
 
 
 @db_connection.connection_handler
@@ -164,3 +159,12 @@ def user_sign_up(cursor, user_data):
                                        'photo_link' : user_data['photo_link'], 'biography' : user_data['biography']})
     except psycopg2.errors.UniqueViolation:
         return False
+    return True
+
+@db_connection.connection_handler
+def get_user_data(cursor, username):
+    query = """SELECT user_id AS id, username, nickname, email, user_age AS age, user_gender AS gender, biography
+    FROM users WHERE username = %(username)s"""
+    cursor.execute(query, {'username': username})
+    results = [dict(each_dict) for each_dict in cursor.fetchall()]
+    return results
