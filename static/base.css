@@ -90,11 +90,13 @@ h2 {
 }
 
 #log_out_form {
+    display: inline-block;
     padding: 0;
 }
 
 #log_out_form .btn {
     margin: 0;
+    width: 150px;
 }
 
 /* Add a red background color to the cancel button */
