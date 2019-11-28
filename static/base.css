@@ -134,27 +134,3 @@ footer {
     text-align: center;
     color: #9C1A1C;
 }
-h2 a.settings{
-    font-size: medium;
-}
-table tbody tr:nth-child(odd) td {
-	background-color: #E5E9DC;
-}
-table {
-	border-spacing: 0;
-	border-collapse: collapse;
-	width:90%;
-    margin: auto;
-}
-table th {
-	text-align: left;
-	background-color: #869960;
-	color: #FFF;
-	text-shadow: 1px 1px 0, rgba(0,0,0,.4)
-}
-table th,
-table td {
-	border: 1px solid #869960;
-	padding: 3px;
-	vertical-align: top;
-}
