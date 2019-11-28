@@ -162,7 +162,7 @@ def user_sign_up(cursor, user_data):
 
 @db_connection.connection_handler
 def get_user_data(cursor, username):
-    query = """SELECT user_id AS id, username, nickname, email, user_age AS age, user_gender AS gender, biography
+    query = """SELECT username, nickname, email, user_age AS age, user_gender AS gender, biography
     FROM users WHERE username = %(username)s"""
     cursor.execute(query, {'username': username})
     results = [dict(each_dict) for each_dict in cursor.fetchall()]
