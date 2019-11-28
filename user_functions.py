@@ -13,12 +13,11 @@ def user_logged_in():
     else:
         return
 
-# should this not be at the place salt is defined? i.e salt=bcrypt.gensalt()
 def generate_salt():
     return bcrypt.gensalt()
 
 
-def hash_password_with_salt(password, salt=generate_salt()):
+def hash_password_with_salt(password, salt=  generate_salt()):
     '''
     Hashes password using random salt
     :param password:
