@@ -29,11 +29,12 @@
                             {% endfor %}
                           {% endif %}
                           {% if username %}
-                            <label class="flash_message">User: <label style="color: crimson">{{ username }}</label>
-                            <form id="log_out_form" class="form-container" action="/log-out" method="get">
-                                {% block original_url %} {% endblock %}
-                                <button type="submit" class="btn cancel">Log out</button>
-                            </form>
+                              <a href="{{url_for('settings', username=username)}}"><label class="flash_message">User: {{ username }}</label></a>
+                                <form id="log_out_form" class="form-container" action="/log-out" method="get">
+                                    {% block original_url %} {% endblock %}
+
+                                    <button type="submit" class="btn cancel resize log_out">Log out</button>
+                                </form>
                           {% endif %}
                         {% endwith %}
                     </div>

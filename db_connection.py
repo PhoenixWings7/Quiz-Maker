@@ -5,7 +5,6 @@ import psycopg2, psycopg2.extras, psycopg2.errors
 
 def create_connection_string():
     db_url = os.environ.get("DATABASE_URL")
-
     env_var_defined = db_url
 
     if env_var_defined:
