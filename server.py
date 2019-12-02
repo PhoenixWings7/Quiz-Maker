@@ -72,6 +72,9 @@ def log_out():
     user_functions.log_out()
     #if request method is "GET", you can find your form data only in request.args.get not in request.form
     original_url = request.args.get('original url')
+    if original_url == "user_page":
+        flash(VALIDATION_MESSAGES["no user logged in"])
+        return redirect(url_for("main_page"))
     return redirect(url_for(original_url))
 
 
@@ -144,8 +147,8 @@ def quiz_list():
 
 
 @app.route('/<username>/details')
-def user_page(username):
-    if username != user_functions.user_logged_in():
+def user_page(username=None):
+    if (username != user_functions.user_logged_in()) or (username is None):
         flash(VALIDATION_MESSAGES["no user logged in"])
         return redirect(url_for("main_page"))
     user_info = data_handler.get_user_data(username)
