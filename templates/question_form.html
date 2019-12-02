@@ -8,18 +8,16 @@
 
 <br>
 
-<div>
-    <label for = "correct_answer">
-        <div style="color: green"><b>Correct answer</b></div>
-    </label>
-    <input type = "text" id = "correct_answer" name = "correct_answer" required>
-</div>
 
 {% for answer_id in answer_ids %}
     <br>
     <div>
         <label for = "{{answer_id}}">
-            <div class = "optional_answers">Optional answer</div>
+            {% if answer_id == "correct_answer" %}
+                <div style="color: green"><b>Correct answer</b></div>
+            {% else %}
+                <div class = "optional_answers">Optional answer</div>
+            {% endif %}
         </label>
         <input id = "{{answer_id}}" name = "{{answer_id}}" required>
     </div>

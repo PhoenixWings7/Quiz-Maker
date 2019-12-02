@@ -84,7 +84,7 @@ def new_quiz_route():
         if not username:
             flash(VALIDATION_MESSAGES["no user logged in"])
             return redirect(url_for("main_page"))
-        answer_ids = data_handler.create_answer_names()
+        answer_ids = data_handler.ANSWER_NAMES
         return render_template(TEMPLATES_ROUTES["new quiz start"], answer_ids=answer_ids, username=username)
 
     if request.method == "POST":
@@ -117,7 +117,7 @@ def new_quiz_route():
 @app.route('/new-quiz-next/<quiz_id>', methods=["GET", "POST"])
 def next_question_form(quiz_id):
     if request.method == "GET":
-        answer_ids = data_handler.create_answer_names()
+        answer_ids = data_handler.ANSWER_NAMES
         return render_template(TEMPLATES_ROUTES["next question form"],
                                answer_ids=answer_ids,
                                quiz_id=quiz_id)
@@ -131,7 +131,7 @@ def next_question_form(quiz_id):
         question_data.pop("quiz_title")
         data_handler.add_answers_to_db(question_data, quiz_id)
 
-        answer_ids = data_handler.create_answer_names()
+        answer_ids = data_handler.ANSWER_NAMES
         return render_template(TEMPLATES_ROUTES["next question form"],
                                answer_ids=answer_ids, quiz_id=quiz_id)
 
