@@ -12,7 +12,8 @@ TEMPLATES_ROUTES = {"main_page" : "main.html",
                     "new quiz start" : "new_quiz.html",
                     "next question form" : "next_question.html",
                     "quiz list" : "quiz_list.html",
-                    "sign_up" : "sign_up.html"}
+                    "sign_up" : "sign_up.html",
+                    "user page" : "user_page.html"}
 
 VALIDATION_MESSAGES = {"invalid title" : '''Your title includes some special signs. You're only allowed to use
                                             letters and spaces. Try again!''',
@@ -143,9 +144,12 @@ def quiz_list():
 
 
 @app.route('/<username>/details')
-def settings(username):
+def user_page(username):
+    if username != user_functions.user_logged_in():
+        flash(VALIDATION_MESSAGES["no user logged in"])
+        return redirect(url_for("main_page"))
     user_info = data_handler.get_user_data(username)
-    return render_template('details.html', user_info=user_info, username=username)
+    return render_template(TEMPLATES_ROUTES["user page"], user_info=user_info, username=username)
 
 
 if __name__ == '__main__':
