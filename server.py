@@ -59,11 +59,11 @@ def log_in():
         user_password = db_password.tobytes()
 
         is_logged_in = user_functions.log_in(username, entered_password, user_password)
+        if not is_logged_in:
+            flash(VALIDATION_MESSAGES["user not in database"])
     else:
         flash(VALIDATION_MESSAGES["user not in database"])
 
-    if not is_logged_in:
-        flash(VALIDATION_MESSAGES["user not in database"])
     return redirect(url_for("main_page"))
 
 
