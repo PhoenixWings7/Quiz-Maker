@@ -11,7 +11,7 @@ def create_answer_names():
     Create dictionary labels for one correct answer and a few possible answers ("answer_1", "answer_2"...) for a form
     :return: list of string labels
     '''
-    answer_ids = ["answer_" + str(ord_num) for ord_num in range(2, NUM_OF_POSSIBLE_ANSW)]
+    answer_ids = ["answer_" + str(ord_num) for ord_num in range(2, NUM_OF_POSSIBLE_ANSW + 1)]
     answer_names = ["correct_answer"] + answer_ids
     return answer_names
 
