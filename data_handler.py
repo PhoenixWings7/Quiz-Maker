@@ -11,7 +11,7 @@ def create_answer_names():
     Create dictionary labels for one correct answer and a few possible answers ("answer_1", "answer_2"...) for a form
     :return: list of string labels
     '''
-    answer_ids = ["answer_" + str(ord_num) for ord_num in range(2, NUM_OF_POSSIBLE_ANSW)]
+    answer_ids = ["answer_" + str(ord_num) for ord_num in range(2, NUM_OF_POSSIBLE_ANSW + 1)]
     answer_names = ["correct_answer"] + answer_ids
     return answer_names
 
@@ -26,10 +26,8 @@ def create_data_headers():
     return data_headers
 
 
-
 ANSWER_NAMES = create_answer_names()
 DATA_HEADERS = create_data_headers()
-
 
 
 def validate_title(title):
@@ -39,6 +37,7 @@ def validate_title(title):
     :return: True or False
     '''
     return title.replace(" ", "").isalpha()
+
 
 
 @db_connection.connection_handler
@@ -69,7 +68,6 @@ def get_user_id(cursor, username):
         return
 
     return user_id
-
 
 
 @db_connection.connection_handler
@@ -159,3 +157,11 @@ def user_sign_up(cursor, user_data):
                                        'photo_link' : user_data['photo_link'], 'biography' : user_data['biography']})
     except psycopg2.errors.UniqueViolation:
         return False
+
+@db_connection.connection_handler
+def get_user_data(cursor, username):
+    query = '''SELECT username, nickname, email, user_age AS age, user_gender AS gender, biography AS "about me"
+    FROM users WHERE username = %(username)s'''
+    cursor.execute(query, {'username': username})
+    results = cursor.fetchall()
+    return results
