@@ -7,6 +7,7 @@ def user_logged_in():
     Check if any user is logged in and return his/her username. If not logged in, return None.
     :return string or None
     '''
+    print(session)
     if 'username' in session:
         return session['username']
     else:
@@ -45,4 +46,5 @@ def log_in(username, input_password, user_password):
 
 
 def log_out():
-    session.pop('username')
+    #None after the comma prevents KeyError from happening if there's no username in session
+    session.pop('username', None)
