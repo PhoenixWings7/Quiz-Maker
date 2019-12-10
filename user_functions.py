@@ -1,5 +1,5 @@
 from flask import session
-import bcrypt
+import bcrypt, data_handler
 
 
 def user_logged_in():
@@ -48,3 +48,12 @@ def log_in(username, input_password, user_password):
 def log_out():
     #None after the comma prevents KeyError from happening if there's no username in session
     session.pop('username', None)
+
+
+def update_details(old_user_data, new_user_data):
+    data_handler.update_db(
+        old_user_data['username'],
+        new_user_data['username'],
+        new_user_data['email'],
+        new_user_data['biography'],
+        new_user_data['nickname'])

@@ -10,41 +10,41 @@
 
 {% block content %}
     <link rel="stylesheet" href="../static/sign_up.css">
-    <div class="user_info">
+    <div class="old_user_data">
         <h1>update account</h1>
         <img src="{{ url_for('static', filename='profile_pictures/avat.jpg') }}" alt="profile picture">
-        <h2 class="account">{{ user_info['username']}}</h2>
-        <p class="account">{{ user_info['email']}}</p>
+        <h2 class="account">{{ old_user_data['username']}}</h2>
+        <p class="account">{{ old_user_data['email']}}</p>
 {#        bootstrap to make the name and email to the right side of the pic needed#}
         <form action="" method="POST">
           <div class="form-group">
             <label for="username">Username</label>
             <input required pattern=".{3,}" id="username" required name="username" title="3 characters minimum"
-                   type="text" class="form-control" value="{{ user_info['username']}}">
+                   type="text" class="form-control" value="{{ old_user_data['username']}}">
           </div>
 
           <div class="form-group">
             <label for="nickname">Nickname</label>
             <input required pattern=".{3,}" id="nickname" name="nickname" required title="3 characters minimum"
-                   type="text" class="form-control" value="{{ user_info['nickname']}}">
+                   type="text" class="form-control" value="{{ old_user_data['nickname']}}">
           </div>
 
             <div class="form-group">
             <label for="email">Email</label>
             <input required pattern=".{3,}" id="email" name="email" required title="3 characters minimum"
-                   type="text" class="form-control" value="{{ user_info['email']}}">
+                   type="text" class="form-control" value="{{ old_user_data['email']}}">
           </div>
 
           <div class="form-group">
             <label for="biography">About you</label>
-            <textarea required class="form-control" id="biography" name="biography" rows="3">{{ user_info['biography']}}</textarea>
+            <textarea required class="form-control" id="biography" name="biography" rows="3">{{ old_user_data['biography']}}</textarea>
           </div>
 
           <div class="form-group">
             <label>User photo</label>
             <div class="user_photo">
-                <label class="user_photo" for="photo_link"></label>
-                <input type="file" class="user_photo" name="photo_link" id="photo_link"
+                <label class="user_photo" for="photo"></label>
+                <input type="file" class="user_photo" name="photo" id="photo"
                     accept="image/*" enctype="multipart/form-data">
             </div>
           </div>

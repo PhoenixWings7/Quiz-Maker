@@ -158,10 +158,30 @@ def user_sign_up(cursor, user_data):
     except psycopg2.errors.UniqueViolation:
         return False
 
+
 @db_connection.connection_handler
 def get_user_data(cursor, username):
-    query = '''SELECT username, nickname, email, user_age AS age, user_gender AS gender, biography AS "about me"
+    query = '''SELECT username, nickname, email, user_age AS age, user_gender AS gender, biography
     FROM users WHERE username = %(username)s'''
     cursor.execute(query, {'username': username})
-    results = cursor.fetchall()
+    results = cursor.fetchone()
     return results
+
+
+@db_connection.connection_handler
+def check_if_username_available(cursor, username):
+    query = '''SELECT username FROM users WHERE username = %(username)s'''
+    cursor.execute(query, {'username': username})
+    return True if not cursor.fetchone() else False
+
+
+@db_connection.connection_handler
+def update_db(cursor, old_username, username, email, biography, nickname):
+    query = ''' UPDATE users 
+    SET username=%(username)s, nickname=%(nickname)s, email=%(email)s, biography=%(biography)s
+    WHERE username = %(old_username)s'''
+    cursor.execute(query, {'old_username': old_username,
+                           'username': username,
+                           'email': email,
+                           'nickname': nickname,
+                           'biography': biography})

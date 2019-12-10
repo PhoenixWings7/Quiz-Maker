@@ -1,5 +1,5 @@
 import os
-from flask import Flask, render_template, request, redirect, url_for, flash
+from flask import Flask, render_template, request, redirect, url_for, flash, session
 import data_handler
 import user_functions
 
@@ -13,7 +13,8 @@ TEMPLATES_ROUTES = {"main_page": "main.html",
                     "next question form": "next_question.html",
                     "quiz list": "quiz_list.html",
                     "sign_up": "sign_up.html",
-                    "user page": "user_page.html"}
+                    "user page": "user_page.html",
+                    "account": "account.html"}
 
 VALIDATION_MESSAGES = {"invalid title": '''Your title includes some special signs. You're only allowed to use
                                             letters and spaces. Try again!''',
@@ -21,7 +22,8 @@ VALIDATION_MESSAGES = {"invalid title": '''Your title includes some special sign
                        "user not in database": '''You entered a wrong name or you aren't a Quiz Maker user. 
                                                     Try again or sign up!''',
                        "no user logged in": '''You're not logged in. Log in and try again.''',
-                       "user already in database": '''Your login or email wasn't unique. Try again or log in.'''}
+                       "user already in database": '''Your login or email wasn't unique. Try again or log in.''',
+                       "username taken": '''The username you chose is already taken, choose another one'''}
 
 
 @app.route('/', methods=["GET"])
@@ -149,8 +151,28 @@ def user_page(username=None):
     if (username != user_functions.user_logged_in()) or (username is None):
         flash(VALIDATION_MESSAGES["no user logged in"])
         return redirect(url_for("main_page"))
-    user_info = data_handler.get_user_data(username)
-    return render_template(TEMPLATES_ROUTES["user page"], user_info=user_info, username=username)
+    else:
+        old_user_data = data_handler.get_user_data(username)
+        if request.method == 'POST':
+            new_user_data = dict(request.form)
+            if new_user_data['username'] != old_user_data['username']:
+                # new user name --> check availability --> update changes
+                if data_handler.check_if_username_available(new_user_data['username']):
+                    user_functions.update_details(old_user_data, new_user_data)
+                    # remove the old invalid as of now username
+                    session.pop('username', None)
+                    # open a session for the new username, no need to redirect to log in
+                    user_functions.set_session_var('username', new_user_data['username'])
+                    return redirect(url_for('user_page', username=new_user_data['username']))
+                else: # username is not available
+                    flash(VALIDATION_MESSAGES["username taken"])
+                    return redirect(url_for('user_page', username=username))
+            else:
+                # username unchanged, others may have changed or not, call the function to update just incase it did
+                user_functions.update_details(old_user_data, new_user_data)
+                return redirect(url_for('user_page', username=new_user_data['username']))
+        elif request.method == 'GET':
+            return render_template(TEMPLATES_ROUTES["account"], old_user_data=old_user_data, username=username)
 
 
 if __name__ == '__main__':
