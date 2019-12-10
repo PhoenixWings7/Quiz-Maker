@@ -57,3 +57,4 @@ def update_details(old_user_data, new_user_data):
         new_user_data['email'],
         new_user_data['biography'],
         new_user_data['nickname'])
+

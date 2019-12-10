@@ -13,20 +13,20 @@
     <div class="old_user_data">
         <h1>update account</h1>
         <img src="{{ url_for('static', filename='profile_pictures/avat.jpg') }}" alt="profile picture">
-        <h2 class="account">{{ old_user_data['username']}}</h2>
+        <h2 class="account">{{ old_user_data['username'] | capitalize}}</h2>
         <p class="account">{{ old_user_data['email']}}</p>
 {#        bootstrap to make the name and email to the right side of the pic needed#}
         <form action="" method="POST">
           <div class="form-group">
             <label for="username">Username</label>
             <input required pattern=".{3,}" id="username" required name="username" title="3 characters minimum"
-                   type="text" class="form-control" value="{{ old_user_data['username']}}">
+                   type="text" class="form-control" value="{{ old_user_data['username'] | capitalize}}">
           </div>
 
           <div class="form-group">
             <label for="nickname">Nickname</label>
             <input required pattern=".{3,}" id="nickname" name="nickname" required title="3 characters minimum"
-                   type="text" class="form-control" value="{{ old_user_data['nickname']}}">
+                   type="text" class="form-control" value="{{ old_user_data['nickname'] | capitalize}}">
           </div>
 
             <div class="form-group">
