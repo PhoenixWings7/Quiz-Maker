@@ -142,10 +142,11 @@ def quiz_list():
         return render_template(TEMPLATES_ROUTES["quiz list"], username = username, quiz_list = quiz_list)
 
 
-@app.route('/<username>/details')
+@app.route('/<username>/', methods=['GET', 'POST'])
 def settings(username):
-    user_info = data_handler.get_user_data(username)
-    return render_template('details.html', user_info=user_info, username=username)
+    # remember to make sure that oonly logged in users have access
+    user_info = data_handler.get_user_data(username)[0]
+    return render_template('account.html', user_info=user_info, username=username)
 
 
 if __name__ == '__main__':
