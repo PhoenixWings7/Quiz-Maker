@@ -1,5 +1,6 @@
 from flask import session
 import bcrypt, data_handler
+import os
 
 
 def user_logged_in():
@@ -57,4 +58,6 @@ def update_details(old_user_data, new_user_data):
         new_user_data['email'],
         new_user_data['biography'],
         new_user_data['nickname'])
+
+
 

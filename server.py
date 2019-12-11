@@ -1,7 +1,9 @@
-import os
-from flask import Flask, render_template, request, redirect, url_for, flash, session
+import os, secrets
 import data_handler
 import user_functions
+from PIL import Image
+from flask import Flask, render_template, request, redirect, url_for, flash, session
+
 
 app = Flask(__name__)
 # Set the secret key to some random bytes. Keep this really secret! The app doesn't work without it.
@@ -24,6 +26,43 @@ VALIDATION_MESSAGES = {"invalid title": '''Your title includes some special sign
                        "no user logged in": '''You're not logged in. Log in and try again.''',
                        "user already in database": '''Your login or email wasn't unique. Try again or log in.''',
                        "username taken": '''The username you chose is already taken, choose another one'''}
+
+ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg'}
+UPLOAD_FOLDER = os.path.join(os.getcwd(), 'static/profile_pictures') # photos will be stored here
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER   # SET THE CONFIGURATIONS FOR ACCEPTING FILES
+
+
+# these functions require app which i can't import due to circular references
+def check_photo_extension(filename: 'photo\'s file name from the profile page') -> 'True for yes otherwise False':
+    """
+    this function takes in the file uploaded and checks if it's extension is in the allowed set of
+    extensions declared in the program
+    """
+    _, file_ext = os.path.splitext(filename)
+    # remove the dot from the extension
+    file_ext = file_ext.replace('.', "")
+    return file_ext in ALLOWED_EXTENSIONS
+
+
+def save_picture(form_photo: 'file object: a photo uploaded from a form') -> 'name of the photo to use in the database':
+    """
+    this function takes a photo uploaded by the user, renames it to a random 8 bit hex digits to avoid name collisions
+    resizes the photo to save on speed and space, saves the photo in the folder static/profile_pictures and returns
+    the name of the photo as we shall use it to get the appropriate photo assigned to user.
+    """
+    # renaming the photo
+    random_hex_name = secrets.token_hex(8)
+    _, file_extension = os.path.splitext(form_photo.filename)
+    photo_name = random_hex_name + file_extension
+    # making the path to the folder to save the photo in
+    photo_path = os.path.join(app.config['UPLOAD_FOLDER'], photo_name)
+    # resizing the photo
+    photo_size = (125, 125) # pixels
+    created_image = Image.open(form_photo)
+    created_image.thumbnail(photo_size)
+    # saving the photo
+    created_image.save(photo_path)
+    return photo_name
 
 
 @app.route('/', methods=["GET"])
@@ -152,6 +191,8 @@ def user_page(username=None):
         flash(VALIDATION_MESSAGES["no user logged in"])
         return redirect(url_for("main_page"))
     else:
+        photo_name = data_handler.get_photo_name_from_db(username)['photo_link']  # data_handler.(username)  # get the photo
+        filepath = url_for('static', filename=f'profile_pictures/{photo_name}')
         old_user_data = data_handler.get_user_data(username)
         if request.method == 'POST':
             new_user_data = dict(request.form)
@@ -172,7 +213,44 @@ def user_page(username=None):
                 user_functions.update_details(old_user_data, new_user_data)
                 return redirect(url_for('user_page', username=new_user_data['username']))
         elif request.method == 'GET':
-            return render_template(TEMPLATES_ROUTES["account"], old_user_data=old_user_data, username=username)
+            return render_template(TEMPLATES_ROUTES["account"], old_user_data=old_user_data,
+                                   filepath=filepath, username=username)
+
+
+@app.route('/<username>/profile-picture-upload', methods=['GET','POST'])
+def profile_picture_upload(username):
+    if (username != user_functions.user_logged_in()) or (username is None):
+        flash(VALIDATION_MESSAGES["no user logged in"])
+        return redirect(url_for("main_page"))
+
+    photo_name = data_handler.get_photo_name_from_db(username)['photo_link']  # data_handler.(username)  # get the photo
+    print(photo_name)
+    filepath = url_for('static', filename=f'profile_pictures/{photo_name}')
+    print(filepath)
+
+    if request.method == 'GET':
+        return render_template('profile_picture.html', filepath=filepath)
+
+    elif request.method == 'POST':
+        file = request.files['image']
+        # CHECK FOR THE PHOTO
+        if file:
+            if check_photo_extension(file.filename): # CHECK THE EXTENSION
+                # SAVE THE PHOTO IF EXTENSION ALLOWED
+                photo_name = save_picture(file)
+                # LINK TO DATABASE
+                data_handler.update_photo_name_in_db(photo_name, username)
+                # CREATE FILE PATH
+                # filepath = url_for('static', filename=f'profile_pictures/{photo_name}')
+                return redirect(url_for('user_page', username = username))
+
+            else: # EXTENSION NOT ALLOWED
+                flash('please choose a correct file with the correct extension')
+                return render_template('profile_picture.html', filepath=filepath)
+
+        else: # PHOTO WASN'T DETECTED
+            flash('No file was uploaded')
+            return render_template('profile_picture.html', filepath=filepath)
 
 
 if __name__ == '__main__':

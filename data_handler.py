@@ -185,3 +185,23 @@ def update_db(cursor, old_username, username, email, biography, nickname):
                            'email': email,
                            'nickname': nickname,
                            'biography': biography})
+
+
+@db_connection.connection_handler
+def update_photo_name_in_db(cursor, image_name, username):
+    query = '''
+            UPDATE users
+            SET photo_link = %(image_name)s
+            WHERE username = %(username)s
+    '''
+    cursor.execute(query, {'image_name': image_name,'username': username})
+
+
+@db_connection.connection_handler
+def get_photo_name_from_db(cursor, username):
+    query = """
+            SELECT photo_link FROM users WHERE username = %(username)s
+            """
+    cursor.execute(query, {'username': username})
+    return dict(cursor.fetchone())
+
