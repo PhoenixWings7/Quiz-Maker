@@ -1,5 +1,13 @@
+bcrypt==3.1.7
+cffi==1.13.2
+Click==7.0
+Flask==1.1.1
 gunicorn==19.5.0
-flask==1.1.1
-jinja2==2.10.3
+itsdangerous==1.1.0
+Jinja2==2.10.3
+MarkupSafe==1.1.1
+Pillow==6.2.1
 psycopg2==2.8.4
-bcrypt
+pycparser==2.19
+six==1.13.0
+Werkzeug==0.16.0
