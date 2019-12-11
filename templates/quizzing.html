@@ -7,5 +7,30 @@
 {% endblock %}
 
 {% block content %}
+    <form id="user_answer_form" action="{{ url_for("participate", quiz_title = quiz_title, quiz_id = quiz_id) }}" method="post">
+        {% for question_index in range(quiz_data|length) %}
+            {% set question_data = quiz_data[question_index] %}
+            <div id="{{ question_index }}">
+                Question: {{ question_data["question"] }}
+                <div class="answers">
+                        {% for answer in question_data["answers"] %}
+                            <input class="answer_block" type="radio" name="{{ question_data["question_id"]|int }}" value="{{ answer["answer_id"]|int }}">
+                                {{ answer["answer"] }}
+                        {% endfor %}
+                    {% if question_index < quiz_data|length - 1 %}
+                    <button type="button" onclick="window.location.href = '#{{ question_index + 1 }}';">Next</button>
+                    {% endif %}
+                </div>
+            </div>
+        {% endfor %}
+        {% if not gained_points %}
+            <input type="submit" value="Submit">
+        {% endif %}
+    </form>
 
+    {% if gained_points %}
+        <div class="gained_points">
+            Gained points: {{ gained_points }}
+        </div>
+    {% endif %}
 {% endblock %}

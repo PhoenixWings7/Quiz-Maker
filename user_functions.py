@@ -1,3 +1,4 @@
+from _cffi_backend import string
 from flask import session
 import bcrypt
 
@@ -47,3 +48,17 @@ def log_in(username, input_password, user_password):
 def log_out():
     #None after the comma prevents KeyError from happening if there's no username in session
     session.pop('username', None)
+
+
+def compare_answers(user_answers, correct_answers):
+    gained_points = 0
+    for answer_dict in correct_answers:
+        try:
+            question_id = str(answer_dict["question_id"])
+            if question_id in user_answers.keys():
+                user_answer = user_answers[question_id]
+                if user_answer == str(answer_dict["answer_id"]):
+                    gained_points += 1
+        except KeyError:
+            pass
+    return gained_points
