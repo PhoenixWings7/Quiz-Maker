@@ -11,7 +11,7 @@ def create_answer_names():
     Create dictionary labels for one correct answer and a few possible answers ("answer_1", "answer_2"...) for a form
     :return: list of string labels
     '''
-    answer_ids = ["answer_" + str(ord_num) for ord_num in range(2, NUM_OF_POSSIBLE_ANSW)]
+    answer_ids = ["answer_" + str(ord_num) for ord_num in range(2, NUM_OF_POSSIBLE_ANSW + 1)]
     answer_names = ["correct_answer"] + answer_ids
     return answer_names
 
@@ -158,10 +158,50 @@ def user_sign_up(cursor, user_data):
     except psycopg2.errors.UniqueViolation:
         return False
 
+
 @db_connection.connection_handler
 def get_user_data(cursor, username):
-    query = """SELECT username, nickname, email, user_age AS age, user_gender AS gender, biography
-    FROM users WHERE username = %(username)s"""
+    query = '''SELECT username, nickname, email, user_age AS age, user_gender AS gender, biography
+    FROM users WHERE username = %(username)s'''
     cursor.execute(query, {'username': username})
-    results = [dict(each_dict) for each_dict in cursor.fetchall()]
+    results = cursor.fetchone()
     return results
+
+
+@db_connection.connection_handler
+def check_if_username_available(cursor, username):
+    query = '''SELECT username FROM users WHERE username = %(username)s'''
+    cursor.execute(query, {'username': username})
+    return True if not cursor.fetchone() else False
+
+
+@db_connection.connection_handler
+def update_db(cursor, old_username, username, email, biography, nickname):
+    query = ''' UPDATE users 
+    SET username=%(username)s, nickname=%(nickname)s, email=%(email)s, biography=%(biography)s
+    WHERE username = %(old_username)s'''
+    cursor.execute(query, {'old_username': old_username,
+                           'username': username,
+                           'email': email,
+                           'nickname': nickname,
+                           'biography': biography})
+
+
+@db_connection.connection_handler
+def update_photo_name_in_db(cursor, image_name, username):
+    query = '''
+            UPDATE users
+            SET photo_link = %(image_name)s
+            WHERE username = %(username)s
+    '''
+    cursor.execute(query, {'image_name': image_name,'username': username})
+
+
+@db_connection.connection_handler
+def get_photo_name_from_db(cursor, username):
+    query = """
+            SELECT photo_link FROM users WHERE username = %(username)s
+            """
+    cursor.execute(query, {'username': username})
+    return dict(cursor.fetchone())
+
