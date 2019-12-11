@@ -160,7 +160,8 @@ def participate(quiz_title, quiz_id):
         correct_answers = data_handler.get_correct_answers(quiz_id)
         gained_points = user_functions.compare_answers(user_answers, correct_answers)
     return render_template(TEMPLATES_ROUTES["participation page"], quiz_title=quiz_title, quiz_data=quiz_data,
-                                                                    quiz_id=quiz_id, gained_points = gained_points)
+                                                                    quiz_id=quiz_id, gained_points = gained_points,
+                                                                    username=username)
 
 
 @app.route('/<username>/details')
