@@ -30,7 +30,7 @@
                 </div>
             </div>
         {% endfor %}
-        {% if not quiz_data %}
+        {% if not quiz_data and not gained_points and gained_points != 0 %}
             <h2>There are no questions!</h2>
         {% elif not gained_points and gained_points != 0 %}
             <input class="submit_btn" type="submit" value="Submit">
@@ -39,7 +39,7 @@
 
     {% if gained_points or gained_points == 0 %}
         <div class="gained_points">
-            Gained points: {{ gained_points }}
+            <h3>Gained points: {{ gained_points }}</h3>
         </div>
     {% endif %}
 {% endblock %}

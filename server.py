@@ -173,7 +173,7 @@ def participate(quiz_title, quiz_id):
                                                                     username=username)
 
 
-@app.route('/<username>/details')
+@app.route('/<username>/details', methods=["GET", "POST"])
 def user_page(username=None):
     if (username != user_functions.user_logged_in()) or (username is None):
         flash(VALIDATION_MESSAGES["no user logged in"])

@@ -7,6 +7,11 @@ h2 {
     font-size: 80px;
 }
 
+h3 {
+    color: darkcyan;
+    font-size: 60px;
+}
+
 #user_answer_form {
     display: inline-block;
     position: relative;

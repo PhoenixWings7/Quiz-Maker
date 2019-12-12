@@ -155,6 +155,7 @@ def user_sign_up(cursor, user_data):
                                        'photo_link': user_data['photo_link'], 'biography': user_data['biography']})
     except psycopg2.errors.UniqueViolation:
         return False
+    return True
 
 
 @db_connection.connection_handler
@@ -204,6 +205,7 @@ def get_photo_name_from_db(cursor, username):
     return dict(cursor.fetchone())
 
 
+@db_connection.connection_handler
 def get_answers_for_question(cursor, question_id):
     statement_str = '''SELECT answer_id, answer FROM answers
                         WHERE question_id = %(question_id)s'''

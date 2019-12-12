@@ -6,10 +6,13 @@
     <input type="hidden" id="original url" name="original url" value="user_page">
 {% endblock %}
 {% block content %}
-    <img src="{{ filepath}}" alt="profile picture" style="border-radius: 50%">
-    <form action="" method="POST" enctype="multipart/form-data">
-        <input type="file" name="image" id="image">
-        <input type="submit" value="Upload Photo">
+    <link rel="stylesheet" href="../static/sign_up.css">
+    <div class="user_info">
+        <img class="user_photo" src="{{ filepath}}" alt="profile picture" style="border-radius: 50%">
+    </div>
+    <form class="user_info" action="" method="POST" enctype="multipart/form-data">
+        <input class="sign_up_btn" type="file" name="image" id="image">
+        <input class="sign_up_btn" type="submit" value="Upload Photo">
 
     </form>
 
