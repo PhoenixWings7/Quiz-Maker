@@ -1,4 +1,3 @@
-import os
 from flask import session
 import bcrypt
 
@@ -8,17 +7,17 @@ def user_logged_in():
     Check if any user is logged in and return his/her username. If not logged in, return None.
     :return string or None
     '''
+    print(session)
     if 'username' in session:
         return session['username']
     else:
         return
 
-
 def generate_salt():
     return bcrypt.gensalt()
 
 
-def hash_password_with_salt(password, salt = generate_salt()):
+def hash_password_with_salt(password, salt=  generate_salt()):
     '''
     Hashes password using random salt
     :param password:
@@ -32,7 +31,7 @@ def set_session_var(var, value):
     session[var] = value
 
 
-def log_in(username, input_password, user_password, salt):
+def log_in(username, input_password, user_password):
     '''
     Logs the user in.
     :param input_password:
@@ -47,4 +46,5 @@ def log_in(username, input_password, user_password, salt):
 
 
 def log_out():
-    session.pop('username')
+    #None after the comma prevents KeyError from happening if there's no username in session
+    session.pop('username', None)
