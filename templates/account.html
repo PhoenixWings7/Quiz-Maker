@@ -12,7 +12,7 @@
     <link rel="stylesheet" href="../static/sign_up.css">
     <div class="old_user_data">
         <h1>update account</h1>
-        <img class="user_photo" src="{{ filepath }}" alt="profile picture">
+        <img class="user_photo" src="{{ filepath }}" alt="profile picture" style="border-radius: 50%">
         <a href="{{ url_for('profile_picture_upload', username=username) }}">update profile picture</a>
         <h2 class="account">{{ old_user_data['username'] | capitalize}}</h2>
         <p class="account">{{ old_user_data['email']}}</p>
