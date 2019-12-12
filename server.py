@@ -57,9 +57,9 @@ def save_picture(form_photo: 'file object: a photo uploaded from a form') -> 'na
     # making the path to the folder to save the photo in
     photo_path = os.path.join(app.config['UPLOAD_FOLDER'], photo_name)
     # resizing the photo
-    photo_size = (125, 125) # pixels
+    photo_size = (300, 300) # pixels
     created_image = Image.open(form_photo)
-    created_image.thumbnail(photo_size)
+    created_image.thumbnail(photo_size, Image.ANTIALIAS)
     # saving the photo
     created_image.save(photo_path)
     return photo_name
