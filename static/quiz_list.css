@@ -2,8 +2,6 @@ body {
     text-align: center;
     align-content: center;
     background-color: #bcff9b;
-
-
 }
 
 .body_content {
@@ -35,6 +33,14 @@ table td {
 }
 table td:hover {
     background-color: #c8ffae;
+}
+table td a {
+    color: black;
+    text-decoration: none;
+}
+table td a:hover {
+    color: darkcyan;
+    text-decoration: none;
 }
 
 #quiz_list{

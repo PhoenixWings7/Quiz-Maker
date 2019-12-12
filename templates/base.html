@@ -3,8 +3,8 @@
     <head>
         <meta charset="UTF-8">
         <title>{% block title %}{% endblock %}</title>
-        <link rel="shortcut icon" href="../static/images/quiz_favicon.png" type="image/x-icon">
-        <link rel="icon" href="../static/images/quiz_favicon.png" type="image/x-icon">
+        <link rel="shortcut icon" href="{{ url_for("static", filename ="images/quiz_favicon.png") }}" type="image/x-icon">
+        <link rel="icon" href="{{ url_for("static", filename ="images/quiz_favicon.png") }}" type="image/x-icon">
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
@@ -15,7 +15,7 @@
         <div class="jumbotron text-center">
                 <div class="row" id="header">
                     <div class="col-sm-2">
-                        <a id="go_to_home" href="/"><img src="../static/images/quiz_time_logo.png" alt="Return to main page"></a>
+                        <a id="go_to_home" href="/"><img src="{{ url_for("static", filename ="images/quiz_time_logo.png") }}" alt="Return to main page"></a>
                     </div>
                     <div class="col-sm-8">
                         <h1>{% block header %} {% endblock %}</h1>
@@ -23,19 +23,21 @@
 
                     <div class="col-sm-2" id="user_log">
                         {% with messages = get_flashed_messages() %}
-                          {% if messages %}
-                            {% for message in messages %}
-                              <label class="flash_message">{{ message }}</label>
-                            {% endfor %}
-                          {% endif %}
-                          {% if username %}
-                              <a href="{{url_for('user_page', username=username)}}"><label class="flash_message">User: {{ username }}</label></a>
+                            {% if messages %}
+                                {% for message in messages %}
+                                    <label class="flash_message">{{ message }}</label>
+                                {% endfor %}
+                            {% endif %}
+                            {% if username %}
+                                <a href="{{url_for('user_page', username=username)}}">
+                                    <label class="flash_message">User: {{ username }}</label>
+                                </a>
                                 <form id="log_out_form" class="form-container" action="/log-out" method="get">
                                     {% block original_url %} {% endblock %}
 
                                     <button type="submit" class="btn cancel resize log_out">Log out</button>
                                 </form>
-                          {% endif %}
+                            {% endif %}
                         {% endwith %}
                     </div>
                 </div>

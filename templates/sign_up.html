@@ -36,13 +36,13 @@
 
           <div class="form-group">
             <label for="user_age">Age:</label>
-            <input type="number" id="user_age" name="user_age" min="18" max="100" step="1" class="form-control"
+            <input required type="number" id="user_age" name="user_age" min="18" max="100" step="1" class="form-control"
                    placeholder="18+" value="{{ story_to_edit['user_age'] }}">
           </div>
 
           <div class="form-group">
             <label for="user_gender">Gender:</label>
-            <select id="user_gender" name="user_gender">
+            <select required id="user_gender" name="user_gender">
                 <option value="male" selected id="user_gender_selected" name="user_gender">male</option>
                 <option value="female" id="user_gender" name="user_gender">female</option>
             </select>

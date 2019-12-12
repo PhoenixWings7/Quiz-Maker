@@ -16,7 +16,9 @@ TEMPLATES_ROUTES = {"main_page": "main.html",
                     "quiz list": "quiz_list.html",
                     "sign_up": "sign_up.html",
                     "user page": "user_page.html",
-                    "account": "account.html"}
+                    "account": "account.html",
+                    "participation page": "quizzing.html"}
+
 
 VALIDATION_MESSAGES = {"invalid title": '''Your title includes some special signs. You're only allowed to use
                                             letters and spaces. Try again!''',
@@ -152,7 +154,26 @@ def quiz_list():
         return render_template(TEMPLATES_ROUTES["quiz list"], username=username, quiz_list=quiz_list)
 
 
-@app.route('/<username>/', methods=['GET', 'POST'])
+@app.route('/participate/<quiz_title>/<quiz_id>', methods=["GET", "POST"])
+def participate(quiz_title, quiz_id):
+    username = user_functions.user_logged_in()
+    if not username:
+        flash(VALIDATION_MESSAGES["no user logged in"])
+        return redirect(url_for("main_page"))
+    if request.method == "GET":
+        gained_points = None
+        quiz_data = data_handler.get_questions_and_answers(quiz_id)
+    elif request.method == "POST":
+        quiz_data = []
+        user_answers = request.form
+        correct_answers = data_handler.get_correct_answers(quiz_id)
+        gained_points = user_functions.compare_answers(user_answers, correct_answers)
+    return render_template(TEMPLATES_ROUTES["participation page"], quiz_title=quiz_title, quiz_data=quiz_data,
+                                                                    quiz_id=quiz_id, gained_points = gained_points,
+                                                                    username=username)
+
+
+@app.route('/<username>/details')
 def user_page(username=None):
     if (username != user_functions.user_logged_in()) or (username is None):
         flash(VALIDATION_MESSAGES["no user logged in"])

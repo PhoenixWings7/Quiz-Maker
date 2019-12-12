@@ -1,0 +1,51 @@
+body {
+    background-color: lavenderblush;
+    text-align: center;
+}
+
+h2 {
+    font-size: 80px;
+}
+
+#user_answer_form {
+    display: inline-block;
+    position: relative;
+    width: 80%;
+    margin: auto;
+    padding: 5%;
+    text-align: center;
+}
+
+button, .submit_btn {
+    display: block;
+    border-radius: 6px;
+    border: white 2px solid;
+    width: 200px;
+    height: 60px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#next {
+    background-color: white;
+    border-color: darkcyan;
+}
+
+.submit_btn {
+    background-color: rgba(253, 84, 79, 0.71);
+}
+
+.answer_block {
+    display: inline-block;
+    vertical-align: middle;
+    width: 300px;
+    height: 200px;
+    margin: auto;
+    padding: 5px;
+    background-color: #99f3d4;
+    border-radius: 6px;
+    text-align: center;
+    font-size: 30px;
+}

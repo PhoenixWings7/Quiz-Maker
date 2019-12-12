@@ -1,3 +1,4 @@
+from _cffi_backend import string
 from flask import session
 from PIL import Image
 import bcrypt, data_handler
@@ -95,3 +96,17 @@ def save_picture(form_photo: 'file object: a photo uploaded from a form',
     # saving the photo
     created_image.save(photo_path)
     return photo_name
+
+
+def compare_answers(user_answers, correct_answers):
+    gained_points = 0
+    for answer_dict in correct_answers:
+        try:
+            question_id = str(answer_dict["question_id"])
+            if question_id in user_answers.keys():
+                user_answer = user_answers[question_id]
+                if user_answer == str(answer_dict["answer_id"]):
+                    gained_points += 1
+        except KeyError:
+            pass
+    return gained_points
