@@ -1,7 +1,6 @@
-import os, secrets
+import os
 import data_handler
 import user_functions
-from PIL import Image
 from flask import Flask, render_template, request, redirect, url_for, flash, session
 
 
@@ -43,7 +42,7 @@ def main_page():
 def sign_up():
     story_to_edit = {}
     if request.method == "GET":
-        pass
+        return render_template(TEMPLATES_ROUTES["sign_up"], story_to_edit=story_to_edit)
 
     if request.method == "POST":
         user_data = dict(request.form)
@@ -63,8 +62,11 @@ def sign_up():
         if not sign_up_successful:
             flash(VALIDATION_MESSAGES["user already in database"])
             return redirect(url_for("main_page"))
+        else:
+            user_functions.set_session_var('username', user_data['username'])
+            return redirect(url_for('main_page'))
 
-    return render_template(TEMPLATES_ROUTES["sign_up"], story_to_edit=story_to_edit)
+
 
 
 @app.route('/log-in', methods=["POST"])
