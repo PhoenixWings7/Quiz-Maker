@@ -104,10 +104,10 @@ def add_answers_to_db(cursor, question_data, quiz_id):
 
 @db_connection.connection_handler
 def get_quiz_titles_list_from_db(cursor):
-    statement_str = '''SELECT title FROM quiz_titles'''
+    '''Returns list of dictionaries with keys: "quiz_id" and "question"'''
+    statement_str = '''SELECT quiz_id, title FROM quiz_titles'''
     cursor.execute(statement_str)
     quiz_titles = cursor.fetchall()
-    quiz_titles = [title['title'] for title in quiz_titles]
     return quiz_titles
 
 
