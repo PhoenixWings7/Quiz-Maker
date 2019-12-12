@@ -13,7 +13,7 @@
     <form id="user_answer_form" action="{{ url_for("participate", quiz_title = quiz_title, quiz_id = quiz_id) }}" method="post">
         {% for question_index in range(quiz_data|length) %}
             {% set question_data = quiz_data[question_index] %}
-            <div id="{{ question_index }}">
+            <div class="question" id="{{ question_index }}">
                 <h2>{{ question_data["question"] }}</h2>
                 <div class="answers">
                         {% for answer in question_data["answers"] %}
@@ -25,6 +25,8 @@
                     <div>
                         {% if question_index < quiz_data|length - 1 %}
                             <button id="next" type="button" onclick="window.location.href = '#{{ question_index + 1 }}';">Next</button>
+                        {% else %}
+                            <input class="submit_btn" type="submit" value="Submit">
                         {% endif %}
                     </div>
                 </div>
@@ -32,8 +34,6 @@
         {% endfor %}
         {% if not quiz_data and not gained_points and gained_points != 0 %}
             <h2>There are no questions!</h2>
-        {% elif not gained_points and gained_points != 0 %}
-            <input class="submit_btn" type="submit" value="Submit">
         {% endif %}
     </form>
 

@@ -21,6 +21,10 @@ h3 {
     text-align: center;
 }
 
+.question {
+    height: 800px;
+}
+
 button, .submit_btn {
     display: block;
     border-radius: 6px;
