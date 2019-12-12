@@ -163,6 +163,7 @@ def participate(quiz_title, quiz_id):
     if request.method == "GET":
         gained_points = None
         quiz_data = data_handler.get_questions_and_answers(quiz_id)
+        quiz_data = user_functions.shuffle_answers(quiz_data)
     elif request.method == "POST":
         quiz_data = []
         user_answers = request.form
