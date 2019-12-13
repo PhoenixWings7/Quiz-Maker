@@ -1,6 +1,7 @@
 from _cffi_backend import string
 from flask import session
 from PIL import Image
+from random import shuffle
 import bcrypt, data_handler
 import os, secrets
 
@@ -110,3 +111,11 @@ def compare_answers(user_answers, correct_answers):
         except KeyError:
             pass
     return gained_points
+
+
+def shuffle_answers(quiz_data):
+    shuffle(quiz_data)
+    for question in quiz_data:
+        answers_list = question["answers"]
+        shuffle(answers_list)
+    return quiz_data
