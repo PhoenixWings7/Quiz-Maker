@@ -6,7 +6,7 @@
     <input type="hidden" id="original url" name="original url" value="user_page">
 {% endblock %}
 {% block content %}
-    <img src="{{ filepath}}" alt="profile picture" class="user_photo">
+    <img src="{{ filepath}}" alt="profile picture" style="border-radius: 50%">
     <form action="" method="POST" enctype="multipart/form-data">
         <input type="file" name="image" id="image">
         <input type="submit" value="Upload Photo">

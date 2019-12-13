@@ -1,7 +1,6 @@
-import os, secrets
+import os
 import data_handler
 import user_functions
-from PIL import Image
 from flask import Flask, render_template, request, redirect, url_for, flash, session
 
 
@@ -27,42 +26,9 @@ VALIDATION_MESSAGES = {"invalid title": '''Your title includes some special sign
                        "user already in database": '''Your login or email wasn't unique. Try again or log in.''',
                        "username taken": '''The username you chose is already taken, choose another one'''}
 
-ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg'}
+
 UPLOAD_FOLDER = os.path.join(os.getcwd(), 'static/profile_pictures') # photos will be stored here
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER   # SET THE CONFIGURATIONS FOR ACCEPTING FILES
-
-
-# these functions require app which i can't import due to circular references
-def check_photo_extension(filename: 'photo\'s file name from the profile page') -> 'True for yes otherwise False':
-    """
-    this function takes in the file uploaded and checks if it's extension is in the allowed set of
-    extensions declared in the program
-    """
-    _, file_ext = os.path.splitext(filename)
-    # remove the dot from the extension
-    file_ext = file_ext.replace('.', "")
-    return file_ext in ALLOWED_EXTENSIONS
-
-
-def save_picture(form_photo: 'file object: a photo uploaded from a form') -> 'name of the photo to use in the database':
-    """
-    this function takes a photo uploaded by the user, renames it to a random 8 bit hex digits to avoid name collisions
-    resizes the photo to save on speed and space, saves the photo in the folder static/profile_pictures and returns
-    the name of the photo as we shall use it to get the appropriate photo assigned to user.
-    """
-    # renaming the photo
-    random_hex_name = secrets.token_hex(8)
-    _, file_extension = os.path.splitext(form_photo.filename)
-    photo_name = random_hex_name + file_extension
-    # making the path to the folder to save the photo in
-    photo_path = os.path.join(app.config['UPLOAD_FOLDER'], photo_name)
-    # resizing the photo
-    photo_size = (125, 125) # pixels
-    created_image = Image.open(form_photo)
-    created_image.thumbnail(photo_size)
-    # saving the photo
-    created_image.save(photo_path)
-    return photo_name
 
 
 @app.route('/', methods=["GET"])
@@ -76,16 +42,31 @@ def main_page():
 def sign_up():
     story_to_edit = {}
     if request.method == "GET":
-        pass
+        return render_template(TEMPLATES_ROUTES["sign_up"], story_to_edit=story_to_edit)
 
     if request.method == "POST":
         user_data = dict(request.form)
+        if request.files["photo_link"]:
+            file = request.files['photo_link']
+            if user_functions.check_photo_extension(file.filename):
+                photo_name = user_functions.save_picture(file, app.config['UPLOAD_FOLDER'])
+            else:
+                # wrong extension, no time to correct this now, so we just set to default
+                flash('wrong extension. You will be able to upload a photo once logged in')
+                photo_name = 'default.jpg'
+        else:
+            # no photo was uploaded hence we assign the default avatar
+            photo_name = 'default.jpg'
+        user_data['photo_link'] = photo_name
         sign_up_successful = data_handler.user_sign_up(user_data)
         if not sign_up_successful:
             flash(VALIDATION_MESSAGES["user already in database"])
             return redirect(url_for("main_page"))
+        else:
+            user_functions.set_session_var('username', user_data['username'])
+            return redirect(url_for('main_page'))
 
-    return render_template(TEMPLATES_ROUTES["sign_up"], story_to_edit=story_to_edit)
+
 
 
 @app.route('/log-in', methods=["POST"])
@@ -224,9 +205,7 @@ def profile_picture_upload(username):
         return redirect(url_for("main_page"))
 
     photo_name = data_handler.get_photo_name_from_db(username)['photo_link']  # data_handler.(username)  # get the photo
-    print(photo_name)
     filepath = url_for('static', filename=f'profile_pictures/{photo_name}')
-    print(filepath)
 
     if request.method == 'GET':
         return render_template('profile_picture.html', filepath=filepath)
@@ -235,9 +214,9 @@ def profile_picture_upload(username):
         file = request.files['image']
         # CHECK FOR THE PHOTO
         if file:
-            if check_photo_extension(file.filename): # CHECK THE EXTENSION
+            if user_functions.check_photo_extension(file.filename): # CHECK THE EXTENSION
                 # SAVE THE PHOTO IF EXTENSION ALLOWED
-                photo_name = save_picture(file)
+                photo_name = user_functions.save_picture(file, app.config['UPLOAD_FOLDER'])
                 # LINK TO DATABASE
                 data_handler.update_photo_name_in_db(photo_name, username)
                 # CREATE FILE PATH
