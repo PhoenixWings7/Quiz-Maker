@@ -20,10 +20,12 @@
                 </thead>
 
                 <tbody>
-                    {% for quiz_title in quiz_list %}
+                    {% for quiz_title_data in quiz_list %}
                     <tr>
                         <td>
-                            {{ quiz_title }}
+                            <a href="{{ url_for("participate", quiz_title=quiz_title_data["title"], quiz_id=quiz_title_data["quiz_id"]) }}">
+                                {{ quiz_title_data["title"] }}
+                            </a>
                         </td>
                     </tr>
                     {% endfor %}

@@ -1,3 +1,15 @@
+body {
+    background-color: lavenderblush;
+}
+
+h2 {
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.old_user_data {
+    margin-left: 40%;
+}
 .form-group textarea {
     width: 400px;
 }
@@ -17,4 +29,14 @@
 .user_info{
     width: 90%;
     margin: auto;
+}
+
+.user_photo {
+    width: 10%;
+    margin-bottom: 20px;
+}
+
+.sign_up_btn {
+    border-radius: 6px;
+    border: solid black 1px;
 }
