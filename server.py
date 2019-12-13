@@ -1,7 +1,6 @@
-import os, secrets
+import os
 import data_handler
 import user_functions
-from PIL import Image
 from flask import Flask, render_template, request, redirect, url_for, flash, session
 
 
@@ -45,16 +44,31 @@ def main_page():
 def sign_up():
     story_to_edit = {}
     if request.method == "GET":
-        pass
+        return render_template(TEMPLATES_ROUTES["sign_up"], story_to_edit=story_to_edit)
 
     if request.method == "POST":
         user_data = dict(request.form)
+        if request.files["photo_link"]:
+            file = request.files['photo_link']
+            if user_functions.check_photo_extension(file.filename):
+                photo_name = user_functions.save_picture(file, app.config['UPLOAD_FOLDER'])
+            else:
+                # wrong extension, no time to correct this now, so we just set to default
+                flash('wrong extension. You will be able to upload a photo once logged in')
+                photo_name = 'default.jpg'
+        else:
+            # no photo was uploaded hence we assign the default avatar
+            photo_name = 'default.jpg'
+        user_data['photo_link'] = photo_name
         sign_up_successful = data_handler.user_sign_up(user_data)
         if not sign_up_successful:
             flash(VALIDATION_MESSAGES["user already in database"])
             return redirect(url_for("main_page"))
+        else:
+            user_functions.set_session_var('username', user_data['username'])
+            return redirect(url_for('main_page'))
 
-    return render_template(TEMPLATES_ROUTES["sign_up"], story_to_edit=story_to_edit)
+
 
 
 @app.route('/log-in', methods=["POST"])

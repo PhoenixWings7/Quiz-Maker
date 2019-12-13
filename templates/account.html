@@ -18,24 +18,24 @@
         <br>
         <a href="{{ url_for('profile_picture_upload', username=username) }}">update profile picture</a>
         <h2 class="account">{{ old_user_data['username'] }}</h2>
-        <p class="account">{{ old_user_data['email']}}</p>
+        <p class="account">{{ old_user_data['email'] }}</p>
 {#        bootstrap to make the name and email to the right side of the pic needed#}
         <form class="form-group" action="" method="POST" >
           <div class="form-group">
             <label for="username">Username</label>
-            <input required pattern=".{3,}" id="username" required name="username" title="3 characters minimum"
-                   type="text" class="form-control" value="{{ old_user_data['username'] }}">
+            <input required pattern=".{3,}" id="username" name="username" title="3 characters minimum"
+                   type="text" class="form-control" value="{{ old_user_data['username'] }}" formenctype="multipart/form-data">
           </div>
 
           <div class="form-group">
             <label for="nickname">Nickname</label>
-            <input required pattern=".{3,}" id="nickname" name="nickname" required title="3 characters minimum"
+            <input required pattern=".{3,}" id="nickname" name="nickname" title="3 characters minimum"
                    type="text" class="form-control" value="{{ old_user_data['nickname'] }}">
           </div>
 
             <div class="form-group">
             <label for="email">Email</label>
-            <input required pattern=".{3,}" id="email" name="email" required title="3 characters minimum"
+            <input required pattern=".{3,}" id="email" name="email" title="3 characters minimum"
                    type="text" class="form-control" value="{{ old_user_data['email']}}">
           </div>
 

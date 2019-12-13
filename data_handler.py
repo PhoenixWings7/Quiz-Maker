@@ -155,7 +155,8 @@ def user_sign_up(cursor, user_data):
                                        'photo_link': user_data['photo_link'], 'biography': user_data['biography']})
     except psycopg2.errors.UniqueViolation:
         return False
-    return True
+    else:
+        return True
 
 
 @db_connection.connection_handler
