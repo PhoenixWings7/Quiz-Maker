@@ -11,6 +11,7 @@
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
         <link rel="stylesheet" href="{{url_for('static', filename='base.css')}}">
     </head>
+    <body>
     <header>
         <div class="jumbotron text-center">
                 <div class="row" id="header">
@@ -43,10 +44,9 @@
                 </div>
         </div>
     </header>
-    <body>
         {% block content %}{% endblock %}
-    </body>
     <div class="push">
         <footer>2019 Created by© <i>PhoenixWings7 & Harnet69 & MainaGeorge</i></footer>
     </div>
+    </body>
 </html>
