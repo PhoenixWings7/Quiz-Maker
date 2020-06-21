@@ -1,9 +1,11 @@
-from _cffi_backend import string
-from flask import session
-from PIL import Image
+import os
+import secrets
 from random import shuffle
-import bcrypt, data_handler
-import os, secrets
+
+import bcrypt  
+import data_handler
+from PIL import Image
+from flask import session
 
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg'}
 
